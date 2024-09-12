@@ -35,9 +35,15 @@
             var p_order = new Post();
             p_order.id_collection = "order";
             p_order.label = "Đơn đặt hàng";
-            p_order.data_form_add.fields.push(cms.field('name', "Tên Bình Luận Viên"));
-            p_order.data_form_add.fields.push(cms.field('avatar', "Ảnh đại diện","file"));
-            p_order.data_form_add.fields.push(cms.field("order", "Thứ tự hiển thị", "text"));
+            p_order.data_form_add.fields.push(cms.field('firstName', "FirstName"));
+            p_order.data_form_add.fields.push(cms.field('lastName', "LastName"));
+            p_order.data_form_add.fields.push(cms.field('address', "Address"));
+            p_order.data_form_add.fields.push(cms.field('postcode', "Postcode"));
+            p_order.data_form_add.fields.push(cms.field('city', "City"));
+            p_order.data_form_add.fields.push(cms.field('phone', "Phone"));
+            p_order.data_form_add.fields.push(cms.field('email', "Email"));
+            p_order.data_form_add.fields.push(cms.field('country', "Country"));
+            p_order.data_form_add.fields.push(cms.field('orderNotes', "OrderNotes"));
             cms.add(p_order);
 
             var p_setting = new Post();

@@ -250,9 +250,8 @@
   <!-- Core theme JS-->
   <script src="js/scripts.js"></script>
   <!-- PayPal SDK -->
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=Af7znqP-5L0Bv0zIMPo1HqLyySWNAHAVusgLaLrwCuJPgsrpcRJ5zfslxH_akyAlq8Cz_ranSfNk9JSJ&currency=USD"></script>
-
+  <!--<script src="https://www.paypal.com/sdk/js?client-id=Af7znqP-5L0Bv0zIMPo1HqLyySWNAHAVusgLaLrwCuJPgsrpcRJ5zfslxH_akyAlq8Cz_ranSfNk9JSJ&currency=USD&components=buttons&vault=true"></script>!-->
+  <script src="https://www.paypal.com/sdk/js?client-id=AcW86yX1h7Mae8ofqkhDol9d9kq5zI4fVY5jKuRT45uTwQw52aYYDNI5AwjrKw7tAExqW5N128z1qLF1&currency=USD&components=buttons&vault=true"></script>
   <script>
     // Lấy thông tin từ form checkout
     const getCheckoutDetails = () => {
@@ -272,6 +271,7 @@
     paypal.Buttons({
       createOrder: function (data, actions) {
         return actions.order.create({
+          intent: 'AUTHORIZE', 
           purchase_units: [{
             "description":"All Product On site payshop.vercel.app #1232334",
             "amount": {
@@ -282,11 +282,22 @@
         });
       },
       onApprove: function (data, actions) {
-        return actions.order.capture().then(function (details) {
+        return actions.order.authorize().then(function (authorization) {
+          var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
           const { firstName, lastName, address, postcode, city, phone, email, country, orderNotes } = getCheckoutDetails();
           var tt_price = $('#tt_price').html();
 
-          Swal.fire({
+          return fetch('https://nodejs-server-fnc.vercel.app/api/paypal.js', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            orderID: data.orderID,
+                            total_price:tt_price
+                        })
+                    }).then(function (response) {
+                      Swal.fire({
             icon: 'success',
             title: 'Payment Successful',
             html: `
@@ -313,6 +324,11 @@
           d_order["country"] = firstName;
           d_order["orderNotes"] = orderNotes;
           cr_firestore.add(d_order, "order", () => { });
+                    }).then(function (details) {
+                        alert('Authorization complete for ' + details.payer.name.given_name);
+                    });
+
+
         });
       },
       onCancel: function (data) {

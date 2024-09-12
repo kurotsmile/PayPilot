@@ -279,9 +279,9 @@
             }
           }],
             application_context: {
-                shipping_preference: "NO_SHIPPING" // Không yêu cầu thông tin vận chuyển
+                shipping_preference: "NO_SHIPPING"
             },
-            intent: 'AUTHORIZE' // Thiết lập intent là authorize
+            intent: 'AUTHORIZE'
         });
       },
       onApprove: function (data, actions) {
@@ -293,14 +293,14 @@
           const { firstName, lastName, address, postcode, city, phone, email, country, orderNotes } = getCheckoutDetails();
           var tt_price = $('#tt_price').html();
 
-          return fetch('https://nodejs-server-fnc.vercel.app/api/paypal.js', {
+          return fetch('https://nodejs-server-fnc.vercel.app/api/paypal.js?orderID='+ data.orderID+"&total_price="+total_price, {
                         method: 'post',
                         headers: {
                             'content-type': 'application/json'
                         },
                         body: JSON.stringify({
                             orderID: data.orderID,
-                            total_price:tt_price
+                            total_price:total_price
                         })
                     }).then(function (response) {
                         return response.json();

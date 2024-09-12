@@ -282,7 +282,7 @@
       },
       onApprove: function (data, actions) {
         return actions.order.authorize().then(function (authorization) {
-          var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
+          //var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
           const { firstName, lastName, address, postcode, city, phone, email, country, orderNotes } = getCheckoutDetails();
           var tt_price = $('#tt_price').html();
 

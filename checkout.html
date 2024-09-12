@@ -251,7 +251,7 @@
       const email = document.getElementById('email').value;
       const country = document.getElementById('country').value;
       const orderNotes = document.getElementById('orderNotes').value;
-      return { firstName, lastName, address, postcode, city, state, phone, email, country, orderNotes };
+      return { firstName, lastName, address, postcode, city, phone, email, country, orderNotes };
     };
 
     // Tạo PayPal Button
@@ -268,20 +268,32 @@
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
           const { firstName, lastName, address, postcode, city, phone, email, country, orderNotes } = getCheckoutDetails();
-
+          var tt_price=$('#tt_price').html();
           // Hiển thị thông báo thanh toán thành công với SweetAlert2
           Swal.fire({
             icon: 'success',
             title: 'Payment Successful',
             html: `
               <p>Thank you, <strong>${firstName} ${lastName}</strong>!</p>
-              <p>Your payment of <strong>$25.00</strong> has been received.</p>
-              <p><strong>Shipping Address:</strong> ${address}, ${city}, ${state}, ${postcode}, ${country}</p>
+              <p>Your payment of <strong>${tt_price}</strong> has been received.</p>
+              <p><strong>Shipping Address:</strong> ${address}, ${city}, ${postcode}, ${country}</p>
               <p><strong>Phone:</strong> ${phone}</p>
               <p><strong>Order Notes:</strong> ${orderNotes ? orderNotes : 'None'}</p>
               <p>A receipt has been sent to <strong>${email}</strong>.</p>
             `
           });
+
+          var d_order={};
+          d_order["firstName"]=firstName;
+          d_order["lastName"]=firstName;
+          d_order["address"]=firstName;
+          d_order["postcode"]=firstName;
+          d_order["city"]=firstName;
+          d_order["phone"]=firstName;
+          d_order["email"]=firstName;
+          d_order["country"]=firstName;
+          d_order["orderNotes"]=orderNotes;
+          cr_firestore.add(d_order,"order",()=>{});
         });
       },
       onCancel: function(data) {

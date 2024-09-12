@@ -53,16 +53,20 @@
         $('#cart-items').empty();
         let total = 0;
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let itemCount = 0;
+
         cart.forEach(item => {
           $('#cart-items').append(`
             <li class="list-group-item d-flex justify-content-between align-items-center">
               ${item.name} - $${item.price} x ${item.quantity}
-              <span class="badge bg-primary rounded-pill">$${(item.price * item.quantity).toFixed(2)}</span>
-              <button class="remove-btn btn-sm" data-id="${item.id}">Remove</button>
+              <span class="badge bg-dark rounded-pill">$${(item.price * item.quantity).toFixed(2)}</span>
+              <button class="btn btn-outline-dark remove-btn btn-sm" data-id="${item.id}"><i class="bi bi-trash-fill"></i> Remove</button>
             </li>
           `);
           total += item.price * item.quantity;
+          itemCount += item.quantity;
         });
         $('#cart-total').html(`<h4>Total: $<span id="tt_price">${total.toFixed(2)}</span></h4>`);
+        $("#count_cart").html(itemCount);
       }
       });

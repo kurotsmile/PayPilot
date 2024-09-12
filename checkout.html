@@ -294,7 +294,7 @@
           var tt_price = $('#tt_price').html();
 
           return fetch('https://nodejs-server-fnc.vercel.app/api/paypal.js?orderID='+ data.orderID+"&total_price="+tt_price, {
-                        method: 'post'
+                        method: 'get'
                     }).then(function (response) {
                         return response.json();
                     }).then(function (details) {

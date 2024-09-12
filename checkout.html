@@ -273,7 +273,6 @@
         return actions.order.create({
           intent: 'AUTHORIZE', 
           purchase_units: [{
-            "description":"All Product On site payshop.vercel.app #1232334",
             "amount": {
               currency_code: 'USD',
               value: $('#tt_price').html()
@@ -287,7 +286,7 @@
           const { firstName, lastName, address, postcode, city, phone, email, country, orderNotes } = getCheckoutDetails();
           var tt_price = $('#tt_price').html();
 
-          return fetch('https://nodejs-server-fnc.vercel.app/api/paypal.js', {
+            return fetch('https://nodejs-server-fnc.vercel.app/api/paypal.js', {
                         method: 'post',
                         headers: {
                             'content-type': 'application/json'
@@ -297,38 +296,10 @@
                             total_price:tt_price
                         })
                     }).then(function (response) {
-                      Swal.fire({
-                              icon: 'success',
-                              title: 'Payment Successful',
-                              html: `
-                                <p>Thank you, <strong>${firstName} ${lastName}</strong>!</p>
-                                <p>Your payment of <strong>${tt_price}</strong> has been received.</p>
-                                <p><strong>Shipping Address:</strong> ${address}, ${city}, ${postcode}, ${country}</p>
-                                <p><strong>Phone:</strong> ${phone}</p>
-                                <p><strong>Order Notes:</strong> ${orderNotes ? orderNotes : 'None'}</p>
-                                <p>A receipt has been sent to <strong>${email}</strong>.</p>
-                              `
-                            });
-
-                            cr_firestore.id_project = "xoilacfoodball";
-                            cr_firestore.api_key = "AIzaSyD2cbGXjqxKHzmtARX6ejsCDJePDpth39Y";
-
-                            var d_order = {};
-                            d_order["firstName"] = firstName;
-                            d_order["lastName"] = firstName;
-                            d_order["address"] = firstName;
-                            d_order["postcode"] = firstName;
-                            d_order["city"] = firstName;
-                            d_order["phone"] = firstName;
-                            d_order["email"] = firstName;
-                            d_order["country"] = firstName;
-                            d_order["orderNotes"] = orderNotes;
-                            cr_firestore.add(d_order, "order", () => { });
+                      alert("sd");
                     }).then(function (details) {
                         alert('Authorization complete for ' + details.payer.name.given_name);
                     });
-
-
         });
       },
       onCancel: function (data) {

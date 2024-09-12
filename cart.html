@@ -26,8 +26,27 @@
       padding: 8px 16px;
       border-radius: 4px;
     }
+    .cart-btn {
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+    }
     .cart-btn:hover {
       background-color: #0056b3;
+    }
+    .remove-btn {
+      cursor: pointer;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .remove-btn:hover {
+      background-color: #c82333;
     }
     .nav-link {
       cursor: pointer;
@@ -36,41 +55,18 @@
 </head>
 <body>
 
-  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">My Shop</h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-      <a class="p-2 text-dark" href="index.html">Products</a>
-      <a class="p-2 text-dark" href="cart.html">Cart</a>
-      <a class="p-2 text-dark" href="checkout.html">Checkout</a>
-    </nav>
-  </div>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+        <h5 class="my-0 mr-md-auto font-weight-normal">My Shop</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="index.html">Products</a>
+          <a class="p-2 text-dark" href="cart.html">Cart</a>
+          <a class="p-2 text-dark" href="checkout.html">Checkout</a>
+        </nav>
+      </div>
 
   <div class="container mt-5">
-    <h2 class="text-center">Shop</h2>
-    
-    <div class="row">
-      <!-- Sample Product 1 -->
-      <div class="col-md-4">
-        <div class="product-card">
-          <h4>Product 1</h4>
-          <p>$10.00</p>
-          <button class="cart-btn" data-id="1" data-name="Product 1" data-price="10.00">Add to Cart</button>
-        </div>
-      </div>
+    <h2 class="text-center">Cart</h2>
 
-      <!-- Sample Product 2 -->
-      <div class="col-md-4">
-        <div class="product-card">
-          <h4>Product 2</h4>
-          <p>$15.00</p>
-          <button class="cart-btn" data-id="2" data-name="Product 2" data-price="15.00">Add to Cart</button>
-        </div>
-      </div>
-
-      <!-- Add more products as needed -->
-    </div>
-
-    <h3 class="mt-5">Cart</h3>
     <ul id="cart-items" class="list-group">
       <!-- Cart items will be added here dynamically -->
     </ul>
@@ -92,6 +88,13 @@
         updateCartUI();
       });
 
+      // Remove product from cart
+      $(document).on('click', '.remove-btn', function() {
+        const id = $(this).data('id');
+        removeFromCart(id);
+        updateCartUI();
+      });
+
       // Function to add product to cart
       function addToCart(id, name, price) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -106,14 +109,22 @@
         localStorage.setItem('cart', JSON.stringify(cart));
       }
 
+      // Function to remove product from cart
+      function removeFromCart(id) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart = cart.filter(item => item.id !== id);
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+
       // Function to load cart items from localStorage
       function loadCart() {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         cart.forEach(item => {
           $('#cart-items').append(`
-            <li class="list-group-item d-flex justify-content-between">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
               ${item.name} - $${item.price} x ${item.quantity}
               <span class="badge bg-primary rounded-pill">$${(item.price * item.quantity).toFixed(2)}</span>
+              <button class="remove-btn btn-sm" data-id="${item.id}">Remove</button>
             </li>
           `);
         });

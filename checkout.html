@@ -250,28 +250,83 @@
   <!-- Core theme JS-->
   <script src="js/scripts.js"></script>
   <!-- PayPal SDK -->
-  <!--<script src="https://www.paypal.com/sdk/js?client-id=Af7znqP-5L0Bv0zIMPo1HqLyySWNAHAVusgLaLrwCuJPgsrpcRJ5zfslxH_akyAlq8Cz_ranSfNk9JSJ&currency=USD&components=buttons&vault=true"></script>!-->
-  <script src="https://www.paypal.com/sdk/js?client-id=AcW86yX1h7Mae8ofqkhDol9d9kq5zI4fVY5jKuRT45uTwQw52aYYDNI5AwjrKw7tAExqW5N128z1qLF1&currency=USD"></script>
+  <!--<script src="https://www.paypal.com/sdk/js?client-id=Af7znqP-5L0Bv0zIMPo1HqLyySWNAHAVusgLaLrwCuJPgsrpcRJ5zfslxH_akyAlq8Cz_ranSfNk9JSJ&currency=USD&intent=authorize"></script>!-->
+  <script src="https://www.paypal.com/sdk/js?client-id=AcW86yX1h7Mae8ofqkhDol9d9kq5zI4fVY5jKuRT45uTwQw52aYYDNI5AwjrKw7tAExqW5N128z1qLF1&currency=USD&intent=authorize"></script>
   <script>
+    // Lấy thông tin từ form checkout
+    const getCheckoutDetails = () => {
+      const firstName = document.getElementById('firstName').value;
+      const lastName = document.getElementById('lastName').value;
+      const address = document.getElementById('address').value;
+      const postcode = document.getElementById('postcode').value;
+      const city = document.getElementById('city').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+      const country = document.getElementById('country').value;
+      const orderNotes = document.getElementById('orderNotes').value;
+      return { firstName, lastName, address, postcode, city, phone, email, country, orderNotes };
+    };
+
+    // Tạo PayPal Button
     paypal.Buttons({
-        createOrder: function (data, actions) {
-            return actions.order.create({
-                intent: 'AUTHORIZE',
-                purchase_units: [{
-                    amount: {
-                        value: '10.00'
-                    }
-                }]
-            });
-        },
-        onApprove: function (data, actions) {
-            return actions.order.authorize().then(function (authorization) {
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            "description":"All Product On site payshop.vercel.app #1232334",
+            "amount": {
+              currency_code: 'USD',
+              value: $('#tt_price').html()
+            }
+          }],
+            application_context: {
+                shipping_preference: "NO_SHIPPING" // Không yêu cầu thông tin vận chuyển
+            },
+            intent: 'AUTHORIZE' // Thiết lập intent là authorize
+        });
+      },
+      onApprove: function (data, actions) {
+        console.log(data);
+        
+        return actions.order.authorize().then(function (authorization) {
+          var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
+          alert(authorizationID);
+          const { firstName, lastName, address, postcode, city, phone, email, country, orderNotes } = getCheckoutDetails();
+          var tt_price = $('#tt_price').html();
 
-            });
-        }
-    }).render('#paypal-button-container');
-</script>
-
+          return fetch('https://nodejs-server-fnc.vercel.app/api/paypal.js', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            orderID: data.orderID,
+                            total_price:tt_price
+                        })
+                    }).then(function (response) {
+                        return response.json();
+                    }).then(function (details) {
+                        alert('Authorization complete for ' + details.payer.name.given_name);
+                    });
+        });
+      },
+      onCancel: function (data) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Payment Cancelled',
+          text: 'You have cancelled the payment.',
+        });
+      },
+      onError: function (err) {
+        console.log(err);
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'Payment Error',
+          text: 'There was an issue with your payment. Please try again.',
+        });
+      }
+    }).render('#paypal-button-container'); // Hiển thị nút PayPal trên trang
+  </script>
 </body>
 
 </html>

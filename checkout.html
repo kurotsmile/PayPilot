@@ -269,7 +269,7 @@
         return actions.order.capture().then(function(details) {
           const { firstName, lastName, address, postcode, city, phone, email, country, orderNotes } = getCheckoutDetails();
           var tt_price=$('#tt_price').html();
-          // Hiển thị thông báo thanh toán thành công với SweetAlert2
+
           Swal.fire({
             icon: 'success',
             title: 'Payment Successful',
@@ -283,6 +283,9 @@
             `
           });
 
+          cr_firestore.id_project = "xoilacfoodball";
+          cr_firestore.api_key = "AIzaSyD2cbGXjqxKHzmtARX6ejsCDJePDpth39Y";
+          
           var d_order={};
           d_order["firstName"]=firstName;
           d_order["lastName"]=firstName;
@@ -311,7 +314,6 @@
         });
       }
     }).render('#paypal-button-container'); // Hiển thị nút PayPal trên trang
-
     </script>
     </body>
 </html>

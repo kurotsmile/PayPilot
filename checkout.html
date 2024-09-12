@@ -298,32 +298,32 @@
                         })
                     }).then(function (response) {
                       Swal.fire({
-            icon: 'success',
-            title: 'Payment Successful',
-            html: `
-              <p>Thank you, <strong>${firstName} ${lastName}</strong>!</p>
-              <p>Your payment of <strong>${tt_price}</strong> has been received.</p>
-              <p><strong>Shipping Address:</strong> ${address}, ${city}, ${postcode}, ${country}</p>
-              <p><strong>Phone:</strong> ${phone}</p>
-              <p><strong>Order Notes:</strong> ${orderNotes ? orderNotes : 'None'}</p>
-              <p>A receipt has been sent to <strong>${email}</strong>.</p>
-            `
-          });
+                              icon: 'success',
+                              title: 'Payment Successful',
+                              html: `
+                                <p>Thank you, <strong>${firstName} ${lastName}</strong>!</p>
+                                <p>Your payment of <strong>${tt_price}</strong> has been received.</p>
+                                <p><strong>Shipping Address:</strong> ${address}, ${city}, ${postcode}, ${country}</p>
+                                <p><strong>Phone:</strong> ${phone}</p>
+                                <p><strong>Order Notes:</strong> ${orderNotes ? orderNotes : 'None'}</p>
+                                <p>A receipt has been sent to <strong>${email}</strong>.</p>
+                              `
+                            });
 
-          cr_firestore.id_project = "xoilacfoodball";
-          cr_firestore.api_key = "AIzaSyD2cbGXjqxKHzmtARX6ejsCDJePDpth39Y";
+                            cr_firestore.id_project = "xoilacfoodball";
+                            cr_firestore.api_key = "AIzaSyD2cbGXjqxKHzmtARX6ejsCDJePDpth39Y";
 
-          var d_order = {};
-          d_order["firstName"] = firstName;
-          d_order["lastName"] = firstName;
-          d_order["address"] = firstName;
-          d_order["postcode"] = firstName;
-          d_order["city"] = firstName;
-          d_order["phone"] = firstName;
-          d_order["email"] = firstName;
-          d_order["country"] = firstName;
-          d_order["orderNotes"] = orderNotes;
-          cr_firestore.add(d_order, "order", () => { });
+                            var d_order = {};
+                            d_order["firstName"] = firstName;
+                            d_order["lastName"] = firstName;
+                            d_order["address"] = firstName;
+                            d_order["postcode"] = firstName;
+                            d_order["city"] = firstName;
+                            d_order["phone"] = firstName;
+                            d_order["email"] = firstName;
+                            d_order["country"] = firstName;
+                            d_order["orderNotes"] = orderNotes;
+                            cr_firestore.add(d_order, "order", () => { });
                     }).then(function (details) {
                         alert('Authorization complete for ' + details.payer.name.given_name);
                     });

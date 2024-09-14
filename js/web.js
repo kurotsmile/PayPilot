@@ -24,7 +24,7 @@
   
         // Proceed to checkout
         $('#checkout-btn').on('click', function() {
-          window.location.href = 'checkout.html'; // Redirect to checkout page
+          window.location.href = 'checkout.html?v=1'; // Redirect to checkout page
         });
 
               // Function to add product to cart

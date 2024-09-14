@@ -261,15 +261,16 @@
     // Tạo PayPal Button
     paypal.Buttons({
       createOrder: function (data, actions) {
-        // Lấy giá trị sản phẩm và phí vận chuyển từ DOM hoặc tính toán chúng
+        // Lấy giá trị sản phẩm, phí vận chuyển và thuế từ DOM hoặc tính toán chúng
         var itemTotal = parseFloat($('#tt_price').html()); // Giá trị của sản phẩm
-        var shippingCost = 0.50; // Phí vận chuyển, ví dụ là 20 USD
+        var shippingCost = 0.50; 
+        var taxAmount = 0.60; 
 
         return actions.order.create({
           purchase_units: [{
             amount: {
               currency_code: "USD",
-              value: (itemTotal + shippingCost).toFixed(2), // Tổng giá trị đơn hàng bao gồm phí vận chuyển
+              value: (itemTotal + shippingCost + taxAmount).toFixed(2), // Tổng giá trị đơn hàng bao gồm phí vận chuyển và thuế
               breakdown: {
                 item_total: {
                   currency_code: "USD",
@@ -278,12 +279,15 @@
                 shipping: {
                   currency_code: "USD",
                   value: shippingCost.toFixed(2) // Phí vận chuyển
+                },
+                tax_total: {
+                  currency_code: "USD",
+                  value: taxAmount.toFixed(2) // Thuế
                 }
               }
             }
           }]
         });
-
       },
       onApprove: function (data, actions) {
         return actions.order.authorize().then(function (authorization) {

@@ -14,10 +14,11 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
   <!-- Core theme CSS (includes Bootstrap)-->
   <link href="css/styles.css?v=4" rel="stylesheet" />
-  <script src="js/web.js?v=5"></script>
+
   <!-- SweetAlert2 JS -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
   <script src="Carrot-Framework-Web/cr_firestore.js"></script>
+  <script src="js/web.js?v=5"></script>
 </head>
 
 <body>
@@ -263,8 +264,8 @@
       createOrder: function (data, actions) {
         // Lấy giá trị sản phẩm, phí vận chuyển và thuế từ DOM hoặc tính toán chúng
         var itemTotal = parseFloat($('#tt_price').html()); // Giá trị của sản phẩm
-        var shippingCost = 0.50; 
-        var taxAmount = 0.60; 
+        var shippingCost = 0.50;
+        var taxAmount = 0.60;
 
         return actions.order.create({
           purchase_units: [{

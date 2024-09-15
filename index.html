@@ -14,20 +14,20 @@
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css?v=8" rel="stylesheet" />
+    <link href="css/styles.css?v=12" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.4.1/css/all.min.css" integrity="sha512-/RUbtHakVMJrg1ILtwvDIceb/cDkk97rWKvfnFSTOmNbytCyEylutDqeEr9adIBye3suD3RfcsXLOLBqYRW4gw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
     <script src="Carrot-Framework-Web/cr_firestore.js"></script>
     <script src="Carrot-Framework-Web/Carrot.js"></script>
-    <script src="js/web.js?v=11"></script>
+    <script src="js/web.js?v=12"></script>
 </head>
 
 <body>
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="index.html">My Shop</a>
+            <a class="navbar-brand" href="index.html" id="logo_txt">My Shop</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -71,11 +71,6 @@
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5" id="page_containt">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="all_product_home"></div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <div class="btn btn-outline-dark mt-auto cart-btn" onclick="w.show_all_product();return false;"><i class="fas fa-angle-double-right"></i> View All Products</div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -140,79 +135,6 @@
     <!-- Footer -->
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-
-        function p_star(count) {
-            if (count === "" || isNaN(count) || count < 0) {
-                count = 0;
-            }
-            var count = parseInt(count);
-            var html_star = '<div class="d-flex justify-content-center small mb-2 w-100 icons-start">';
-            var maxStars = 5;
-            for (var i = 1; i <= maxStars; i++) {
-                if (i <= count) {
-                    html_star += '<i class="fas fa-star text-warning"></i>';
-                } else {
-                    html_star += '<i class="far fa-star" style="color: #f3f314"></i>'; 
-                }
-            }
-            html_star += '</div>';
-            return html_star;
-        }
-
-        $(document).ready(function () {
-            $("#all_product_home").html("Loading...");
-            cr_firestore.list("product", (datas) => {
-                $("#all_product_home").empty();
-                $.each(datas, function (index, p) {
-                    p.index=index;
-                    if(p.in_home!="1") return true;
-                    var img = '';
-                    if (p.image.trim() == "") img = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
-                    else img = p.image;
-                    var p_html = `
-                    <div class="col mb-5">
-                        <div class="card custom-card h-100">
-                            ${p.sale == "" ? '' : '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>'}    
-                            <!-- Product image-->    
-                            <img class="card-img-top img-prd" src="${img}" alt="..." />    
-                            <!-- Product details-->    
-                            <div class="card-body p-4">        
-                                <div class="text-center">            
-                                    <!-- Product name-->            
-                                    <a class="href-title" href="javascript:;"><b class="fw-bolder title-prd w-100 h-100" style="font-size:13px">${p.name}</b><br/></a>
-                                    ${p_star(p.star)}
-                                    <!-- Product price-->           
-                                    <span class="text-muted text-decoration-line-through">${p.sale}</span> ${p.price}<b>$</b>    
-                                </div>
-                            </div>    
-                            <!-- Product actions-->    
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">        
-                                <div class="text-center">
-                                <a data-id="${index}" data-name="${p.name}" data-price="${p.price}" class="btn btn-outline-dark mt-auto cart-btn" href="#">
-                                    <i class="bi bi-cart-plus"></i> Add to cart
-                                </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `;
-                    var emp_p = $(p_html);
-
-                    $(emp_p).on('click','img, a', () => {
-                        w.show_product_by_data(p);
-                    });
-
-                    $(emp_p).find('.cart-btn').on('click', function () {
-                        const id = $(this).data('id'); const name = $(this).data('name'); const price = $(this).data('price');
-                        addToCart(id, name, price); updateCartUI();
-                    });
-                    $("#all_product_home").append(emp_p);
-                });
-                //$("#all_product_home").append(JSON.stringify(datas));
-            });
-        });
-    </script>
 </body>
 
 </html>

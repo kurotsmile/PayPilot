@@ -55,6 +55,7 @@
             p_setting.icon='<i class="fas fa-wrench"></i>';
             p_setting.id_collection = "setting_home_shop";
             p_setting.label = "Cài đặt Site";
+            p_setting.data_form_add.fields.push(cms.field('logo_txt', "Logo Text (Logo bằng chữ ở đầu menu)"));
             p_setting.data_form_add.fields.push(cms.field('title', "Tiêu đề trang web trang chủ"));
             p_setting.data_form_add.fields.push(cms.field('subtitle', "Tiêu đề phụ giới thiệu ngắn về trang web"));
             p_setting.data_form_add.fields.push(cms.field('api_paypal', "Api client-id","text"));
@@ -119,10 +120,6 @@
                             </a>
                         </li>
                     </ul>
-                </div>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Security</strong> <small>Cms sẽ được cài mật khẩu và trang đăng nhập khi quá trình xây dựng web hoàn tất!</small>
-                    <button onclick="$(this).parent().remove();" type="button" class="close btn btn-sm btn-dark" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
             </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" id="main_contain"></main>

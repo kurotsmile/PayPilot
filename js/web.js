@@ -64,6 +64,7 @@ class Web{
         });
 
         $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
+        $('#logo_txt').html(w.setting.logo_txt);
 
         var page=cr.arg("p");
         if(page=="home") w.show_home();
@@ -84,6 +85,22 @@ class Web{
   show_home(){
       $("#page_title").html(this.setting.title);
       $("#page_subtitle").html(this.setting.subtitle);
+      $("#all_product_home").html("Loading...");
+      cr_firestore.list("product", (datas) => {
+          $("#all_product_home").empty();
+          $.each(datas, function (index, p) {
+              if(p.in_home!="1") return true;
+              p.index=index;
+              $("#all_product_home").append(w.product_item(p));
+          });
+
+          let htm_view_all_product='<div class="row">';
+          htm_view_all_product+='<div class="col-12 text-center">';
+          htm_view_all_product+='<div class="btn btn-outline-dark mt-auto cart-btn" onclick="w.show_all_product();return false;"><i class="fas fa-angle-double-right"></i> View All Products</div>';
+          htm_view_all_product+='</div>';
+          htm_view_all_product+='</div>';
+          $("#all_product_home").append(htm_view_all_product);
+      });
   }
 
   show_about(){
@@ -120,6 +137,68 @@ class Web{
     html_cart+='<button id="checkout-btn" onclick="w.show_checkout();return false;" class="btn btn-outline-dark mt-3"><i class="bi bi-cart-check"></i> Proceed to Checkout</button>';
     $("#page_containt").html(html_cart);
     updateCartUI();
+  }
+
+  p_star(count) {
+    if (count === "" || isNaN(count) || count < 0) {
+        count = 0;
+    }
+    var count = parseInt(count);
+    var html_star = '<div class="d-flex justify-content-center small mb-2 w-100 icons-start">';
+    var maxStars = 5;
+    for (var i = 1; i <= maxStars; i++) {
+        if (i <= count) {
+            html_star += '<i class="fas fa-star text-warning"></i>';
+        } else {
+            html_star += '<i class="far fa-star" style="color: #f3f314"></i>'; 
+        }
+    }
+    html_star += '</div>';
+    return html_star;
+  }
+
+  product_item(p){
+    var img = '';
+    if (p.image.trim() == "") img = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
+    else img = p.image;
+    var p_html = `
+    <div class="col mb-5">
+        <div class="card custom-card h-100">
+            ${p.sale == "" ? '' : '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>'}    
+            <!-- Product image-->    
+            <img class="card-img-top img-prd" src="${img}" alt="..." />    
+            <!-- Product details-->    
+            <div class="card-body p-4">        
+                <div class="text-center">            
+                    <!-- Product name-->            
+                    <a class="href-title" href="javascript:;"><b class="fw-bolder title-prd w-100 h-100" style="font-size:13px">${p.name}</b><br/></a>
+                    ${w.p_star(p.star)}
+                    <!-- Product price-->           
+                    <span class="text-muted text-decoration-line-through">${p.sale}</span> ${p.price}<b>$</b>    
+                </div>
+            </div>    
+            <!-- Product actions-->    
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">        
+                <div class="text-center">
+                <a data-id="${p.index}" data-name="${p.name}" data-price="${p.price}" class="btn btn-outline-dark mt-auto cart-btn" href="#">
+                    <i class="bi bi-cart-plus"></i> Add to cart
+                </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+    var emp_p = $(p_html);
+
+    $(emp_p).on('click','img, a', () => {
+        w.show_product_by_data(p);
+    });
+
+    $(emp_p).find('.cart-btn').on('click', function () {
+        const id = $(this).data('id'); const name = $(this).data('name'); const price = $(this).data('price');
+        addToCart(id, name, price); updateCartUI();
+    });
+    return emp_p;
   }
 
   show_pp(){
@@ -235,47 +314,7 @@ class Web{
       $("#page_containt").html('<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="all_product_home"></div>');
       $.each(datas, function (index, p) {
         p.index = index;
-        var img = '';
-        if (p.image.trim() == "") img = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
-        else img = p.image;
-        var p_html = `
-                    <div class="col mb-5">
-                        <div class="card custom-card h-100">
-                            ${p.sale == "" ? '' : '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>'}    
-                            <!-- Product image-->    
-                            <img class="card-img-top" src="${img}" alt="..." />    
-                            <!-- Product details-->    
-                            <div class="card-body p-4">        
-                                <div class="text-center">            
-                                    <!-- Product name-->            
-                                    <a class="href-title" href="javascript:;"><b class="fw-bolder title-prd w-100" style="font-size:13px">${p.name}</b><br/></a>
-                                    ${p_star(p.star)}
-                                    <!-- Product price-->           
-                                    <span class="text-muted text-decoration-line-through">${p.sale}</span> ${p.price}<b>$</b>    
-                                </div>
-                            </div>    
-                            <!-- Product actions-->    
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">        
-                                <div class="text-center">
-                                <a data-id="${index}" data-name="${p.name}" data-price="${p.price}" class="btn btn-outline-dark mt-auto cart-btn" href="#">
-                                    <i class="bi bi-cart-plus"></i> Add to cart
-                                </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    `;
-        var emp_p = $(p_html);
-
-        $(emp_p).on('click', 'img, a', () => {
-          w.show_product_by_data(p);
-        });
-
-        $(emp_p).find('.cart-btn').on('click', function () {
-          const id = $(this).data('id'); const name = $(this).data('name'); const price = $(this).data('price');
-          addToCart(id, name, price); updateCartUI();
-        });
-        $("#all_product_home").append(emp_p);
+        $("#all_product_home").append(w.product_item(p));
       });
     });
   }

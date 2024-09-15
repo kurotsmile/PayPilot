@@ -50,7 +50,16 @@ class Web{
   onLoad(){
     cr_firestore.get("setting","setting_home_shop",data=>{
       w.setting=data;
-      w.show_home();
+      $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
+
+      var page=cr.arg("p");
+      if(page=="home"){
+        w.show_home();
+      }else if(page=="about"){
+        w.show_about();
+      }else{
+        w.show_home();
+      }
     });
   }
 
@@ -66,7 +75,85 @@ class Web{
     });
   }
 
+  show_cart(){
+    cr.top();
+    $("#page_title").html('<i class="fas fa-shopping-cart"></i> Cart');
+    var html_cart='';
+    html_cart+='<ul id="cart-items" class="list-group"></ul>';
+    html_cart+='<div id="cart-total" class="d-flex justify-content-between align-items-center mt-3">';
+    html_cart+='<h4>Total: $0.00</h4>';
+    html_cart+='</div>';
+    html_cart+='<button id="checkout-btn" onclick="w.show_checkout();return false;" class="btn btn-outline-dark mt-3"><i class="bi bi-cart-check"></i> Proceed to Checkout</button>';
+    $("#page_containt").html(html_cart);
+    updateCartUI();
+  }
+
+  show_checkout(){
+    cr.top();
+    $("#page_title").html('<i class="fas fa-cart-arrow-down"></i> Checkout');
+    cr.get("page/checkout.html",data=>{
+      $("#page_containt").html(data);
+        // Tạo PayPal Button
+        paypal.Buttons({
+          createOrder: function (data, actions) {
+            // Lấy giá trị sản phẩm, phí vận chuyển và thuế từ DOM hoặc tính toán chúng
+            var itemTotal = parseFloat($('#tt_price').html()); // Giá trị của sản phẩm
+            var shippingCost = 0.50;
+            var taxAmount = 0.60;
+
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  currency_code: "USD",
+                  value: (itemTotal + shippingCost + taxAmount).toFixed(2), // Tổng giá trị đơn hàng bao gồm phí vận chuyển và thuế
+                  breakdown: {
+                    item_total: {
+                      currency_code: "USD",
+                      value: itemTotal.toFixed(2) // Giá trị của sản phẩm
+                    },
+                    shipping: {
+                      currency_code: "USD",
+                      value: shippingCost.toFixed(2) // Phí vận chuyển
+                    },
+                    tax_total: {
+                      currency_code: "USD",
+                      value: taxAmount.toFixed(2) // Thuế
+                    }
+                  }
+                }
+              }]
+            });
+          },
+          onApprove: function (data, actions) {
+            return actions.order.authorize().then(function (authorization) {
+              var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
+              console.log('Authorization ID:', authorizationID);
+              window.location.href = "pay_done.html?authorization_id=" + authorizationID;
+            });
+          },
+          onCancel: function (data) {
+            Swal.fire({
+              icon: 'info',
+              title: 'Payment Cancelled',
+              text: 'You have cancelled the payment.',
+            });
+          },
+          onError: function (err) {
+            console.log(err);
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Payment Error',
+              text: 'There was an issue with your payment. Please try again.',
+            });
+          }
+        }).render('#paypal-button-container');
+        updateCartUI();
+    });
+  }
+
   show_all_product(){
+    //cr.change_title("All Product","index.html?p=all_products");
     cr.top();
     $("#page_title").html("All Products");
     $("#page_subtitle").html(this.setting.subtitle);

@@ -30,17 +30,21 @@ function updateCartUI() {
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   let itemCount = 0;
 
-  cart.forEach(item => {
-    $('#cart-items').append(`
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    ${item.name} - $${item.price} x ${item.quantity}
-                    <span class="badge bg-dark rounded-pill">$${(item.price * item.quantity).toFixed(2)}</span>
-                    <button class="btn btn-outline-dark remove-btn btn-sm" data-id="${item.id}"><i class="bi bi-trash-fill"></i> Remove</button>
-                  </li>
-                `);
-    total += item.price * item.quantity;
-    itemCount += item.quantity;
-  });
+  if(cart.length>0){
+    cart.forEach(item => {
+      $('#cart-items').append(`
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                      ${item.name} - $${item.price} x ${item.quantity}
+                      <span class="badge bg-dark rounded-pill">$${(item.price * item.quantity).toFixed(2)}</span>
+                      <button class="btn btn-outline-dark remove-btn btn-sm" data-id="${item.id}"><i class="bi bi-trash-fill"></i> Remove</button>
+                    </li>
+                  `);
+      total += item.price * item.quantity;
+      itemCount += item.quantity;
+    });
+  }else{
+    $('#cart-items').html('<li><i class="fas fa-sad-tear"></i> No Product!</li>');
+  }
   $('#cart-total').html(`<h4>Total: $<span id="tt_price">${total.toFixed(2)}</span></h4>`);
   $("#count_cart").html(itemCount);
 }
@@ -104,6 +108,15 @@ class Web{
     html_cart+='</div>';
     html_cart+='<button id="checkout-btn" onclick="w.show_checkout();return false;" class="btn btn-outline-dark mt-3"><i class="bi bi-cart-check"></i> Proceed to Checkout</button>';
     $("#page_containt").html(html_cart);
+    updateCartUI();
+  }
+
+  show_pp(){
+    cr.top();
+    cr.change_title("Privacy Policy","index.html?p=privacy_policy");
+    cr.show_pp("#page_containt",()=>{
+      $("#page_containt ul").remove();
+    });
     updateCartUI();
   }
 

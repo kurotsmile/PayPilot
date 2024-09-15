@@ -53,15 +53,12 @@ class Web{
       $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
 
       var page=cr.arg("p");
-      if(page=="home"){
-        w.show_home();
-      }else if(page=="done"){
-        w.show_pay_done();
-      }else if(page=="about"){
-        w.show_about();
-      }else{
-        w.show_home();
-      }
+      if(page=="home") w.show_home();
+      else if(page=="cart") w.show_cart();
+      else if(page=="checkout") w.show_checkout();
+      else if(page=="done") w.show_pay_done();
+      else if(page=="about") w.show_about();
+      else w.show_home();
     });
   }
 
@@ -71,6 +68,7 @@ class Web{
   }
 
   show_about(){
+    cr.change_title("About Us","index.html?p=about");
     $("#page_title").html("About Us");
     cr.get("page/about.html",data=>{
       $("#page_containt").html(data);
@@ -86,6 +84,7 @@ class Web{
   }
 
   show_cart(){
+    cr.change_title("Cart","index.html?p=cart");
     cr.top();
     $("#page_title").html('<i class="fas fa-shopping-cart"></i> Cart');
     var html_cart='';
@@ -99,6 +98,7 @@ class Web{
   }
 
   show_checkout(){
+    cr.change_title("Checkout","index.html?p=checkout");
     cr.top();
     $("#page_title").html('<i class="fas fa-cart-arrow-down"></i> Checkout');
     cr.get("page/checkout.html",data=>{
@@ -163,7 +163,7 @@ class Web{
   }
 
   show_all_product(){
-    //cr.change_title("All Product","index.html?p=all_products");
+    cr.change_title("All Product","index.html?p=all_products");
     cr.top();
     $("#page_title").html("All Products");
     $("#page_subtitle").html(this.setting.subtitle);

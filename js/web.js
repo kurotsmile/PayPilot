@@ -75,8 +75,9 @@ class Web{
         else if(page=="about") w.show_about();
         else w.show_home();
 
-        $("#contact_address").html(w.setting_footer.contact_address);
-
+        $.each(w.setting_footer, function(key, val) {
+            $("#"+key).html(val);
+        });
     });
   }
 

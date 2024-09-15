@@ -61,6 +61,16 @@
             p_setting.data_form_add.fields.push(cms.field('api_paypal_scenrest', "Api Secret","text"));
             cms.add(p_setting);
 
+            var setting_contact = new Post();
+            setting_contact.type="setting";
+            setting_contact.icon='<i class="fas fa-wrench"></i>';
+            setting_contact.id_collection = "setting_footer_shop";
+            setting_contact.label = "Cài đặt Footer - Contact";
+            setting_contact.data_form_add.fields.push(cms.field('contact_phone', "Số điện thoại liên hệ"));
+            setting_contact.data_form_add.fields.push(cms.field('contact_email', "Email Liên hệ"));
+            setting_contact.data_form_add.fields.push(cms.field('contact_address', "Địa chỉ"));
+            cms.add(setting_contact);
+
             cr.setColor("#0da4fd");
             cr.onLoad();
             cr.add_btn_top();

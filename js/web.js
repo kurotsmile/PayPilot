@@ -47,19 +47,28 @@ function updateCartUI() {
 
 class Web{
   setting=null;
-  onLoad(){
-    cr_firestore.get("setting","setting_home_shop",data=>{
-      w.setting=data;
-      $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
+  setting_footer=null;
 
-      var page=cr.arg("p");
-      if(page=="home") w.show_home();
-      else if(page=="product") w.show_product();
-      else if(page=="cart") w.show_cart();
-      else if(page=="checkout") w.show_checkout();
-      else if(page=="done") w.show_pay_done();
-      else if(page=="about") w.show_about();
-      else w.show_home();
+  onLoad(){
+
+    cr_firestore.list("setting",datas=>{
+
+        $.each(datas,function(index,setting){
+          if(setting.id_doc=="setting_home_shop") w.setting=setting;
+          if(setting.id_doc=="setting_footer_shop") w.setting_footer=setting;
+        });
+
+        $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
+
+        var page=cr.arg("p");
+        if(page=="home") w.show_home();
+        else if(page=="product") w.show_product();
+        else if(page=="cart") w.show_cart();
+        else if(page=="checkout") w.show_checkout();
+        else if(page=="done") w.show_pay_done();
+        else if(page=="about") w.show_about();
+        else w.show_home();
+
     });
   }
 

@@ -54,6 +54,7 @@ class Web{
 
       var page=cr.arg("p");
       if(page=="home") w.show_home();
+      else if(page=="product") w.show_product();
       else if(page=="cart") w.show_cart();
       else if(page=="checkout") w.show_checkout();
       else if(page=="done") w.show_pay_done();
@@ -218,7 +219,17 @@ class Web{
     });
   }
 
+  show_product(){
+    var id_product=cr.arg("id");
+    cr_firestore.get("product",id_product,(data)=>{
+       w.show_product_by_data(data);
+    },()=>{
+      w.show_product();
+    });
+  }
+
   show_product_by_data(data){
+    cr.change_title(data.name,"?p=product&id="+data.id_doc)
     var img = '';
     if (data.image.trim() == "") img = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
     else img = data.image;

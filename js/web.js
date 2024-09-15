@@ -66,11 +66,14 @@ class Web{
   }
 
   show_product_by_data(data){
+    var img = '';
+    if (data.image.trim() == "") img = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
+    else img = data.image;
     cr.top();
     var html_p='<div class="container px-4 px-lg-5 mt-5">';
     html_p+='<div class="row">';
-      html_p+='<div class="col-md-4 col-12 col-lg-4">sdsd</div>';
-      html_p+='<div class="col-md-8 col-12 col-lg-8">sdsd</div>';
+      html_p+='<div class="col-md-4 col-12 col-lg-4"><img class="w-100" src="'+img+'"/></div>';
+      html_p+='<div class="col-md-8 col-12 col-lg-8">'+data.tip+'</div>';
     html_p+='</div>';
     html_p+='</div>'
     $("#page_title").html(data.name);

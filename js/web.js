@@ -130,6 +130,22 @@ class Web{
         // Tạo PayPal Button
         paypal.Buttons({
           createOrder: function (data, actions) {
+            var allFilled = true;
+            w.error_pay=false;
+
+            $('input[required]').each(function() {
+              if ($(this).val() === '') {
+                allFilled = false;
+                w.error_pay=true;
+                $(this).css('border', '2px solid red');
+              } else {
+                $(this).css('border', '');
+              }
+            });
+            if(allFilled==false){
+              cr.msg("Please fill in all information!","Missing data","warning")
+              return true;
+            }
             // Lấy giá trị sản phẩm, phí vận chuyển và thuế từ DOM hoặc tính toán chúng
             var itemTotal = parseFloat($('#tt_price').html()); // Giá trị của sản phẩm
             var shippingCost = 0.50;
@@ -174,12 +190,13 @@ class Web{
           },
           onError: function (err) {
             console.log(err);
-
-            Swal.fire({
-              icon: 'error',
-              title: 'Payment Error',
-              text: 'There was an issue with your payment. Please try again.',
-            });
+            if(w.error_pay==false){
+              Swal.fire({
+                icon: 'error',
+                title: 'Payment Error',
+                text: 'There was an issue with your payment. Please try again.',
+              });
+            }
           }
         }).render('#paypal-button-container');
         updateCartUI();

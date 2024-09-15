@@ -49,6 +49,7 @@ class Web{
   setting=null;
   onLoad(){
     cr_firestore.get("setting","setting_home_shop",data=>{
+      w.setting=data;
       w.show_home();
     });
   }
@@ -73,11 +74,23 @@ class Web{
     var html_p='<div class="container px-4 px-lg-5 mt-5">';
     html_p+='<div class="row">';
       html_p+='<div class="col-md-4 col-12 col-lg-4"><img class="w-100" src="'+img+'"/></div>';
-      html_p+='<div class="col-md-8 col-12 col-lg-8">'+data.tip+'</div>';
+      html_p+='<div class="col-md-8 col-12 col-lg-8">'
+        html_p+='<b style="font-size:30px;">'+data.price+'$</b><br/>';
+        html_p+='<a data-id="1" data-name="'+data.name+'" data-price="'+data.price+'" class="btn btn-outline-dark mt-auto cart-btn" href="#"><i class="bi bi-cart-plus"></i> Add to cart</a><br/><br/>';
+        html_p+=data.tip;
+      html_p+='</div>';
     html_p+='</div>';
     html_p+='</div>'
     $("#page_title").html(data.name);
     $("#page_containt").html(html_p);
+  }
+
+  add_cart(emp){
+    const id = $(this).data('id'); 
+    const name = $(this).data('name');
+    const price = $(this).data('price');
+    addToCart(id, name, price); 
+    updateCartUI();
   }
 }
 var w=new Web();

@@ -152,6 +152,7 @@
             cr_firestore.list("product", (datas) => {
                 $("#all_product_home").empty();
                 $.each(datas, function (index, p) {
+                    p.index=index;
                     if(p.in_home!="1") return true;
                     var img = '';
                     if (p.image.trim() == "") img = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
@@ -175,7 +176,7 @@
                             <!-- Product actions-->    
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">        
                                 <div class="text-center">
-                                <a data-id="1" data-name="${p.name}" data-price="${p.price}" class="btn btn-outline-dark mt-auto cart-btn" href="#">
+                                <a data-id="${index}" data-name="${p.name}" data-price="${p.price}" class="btn btn-outline-dark mt-auto cart-btn" href="#">
                                     <i class="bi bi-cart-plus"></i> Add to cart
                                 </a>
                                 </div>

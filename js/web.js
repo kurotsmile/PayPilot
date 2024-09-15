@@ -55,6 +55,8 @@ class Web{
       var page=cr.arg("p");
       if(page=="home"){
         w.show_home();
+      }else if(page=="done"){
+        w.show_pay_done();
       }else if(page=="about"){
         w.show_about();
       }else{
@@ -72,6 +74,14 @@ class Web{
     $("#page_title").html("About Us");
     cr.get("page/about.html",data=>{
       $("#page_containt").html(data);
+    });
+  }
+
+  show_pay_done(){
+    $("#page_title").html("Payment");
+    cr.get("page/pay_done.html",data=>{
+      $("#page_containt").html(data);
+      w.get_token(cr.arg('authorization_id'));
     });
   }
 
@@ -234,6 +244,45 @@ class Web{
     addToCart(id, name, price); 
     updateCartUI();
     cr.msg("Product added to cart successfully!","Cart","success");
+  }
+
+  get_token(authorizationID){
+      $.ajax({
+          url: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+          method: "POST",
+          headers: {
+              "Authorization": "Basic " + btoa("AaEa6rk64Piu7oaOnDewMfrYJOV8VqbaDL_RMkkyhWBygCs0sOegbcvQdE4-xAyeaUgysmKqC1eoTx0y:EBCxwMeMboj4I8W2k8gsWjhCUPv6yfLrvZZ0dLh7y5eytg7lYDCruIfLhXCK5F5Gxp0_4YHmktYKKyoU"),
+              "Content-Type": "application/x-www-form-urlencoded"
+          },
+          data: {
+              "grant_type": "client_credentials"
+          },
+          success: function(response) {
+              var accessToken = response.access_token;
+              capturePayment(accessToken,authorizationID);
+          },
+          error: function(error) {
+              console.log("Error fetching Access Token", error);
+          }
+      });
+  }
+
+  capturePayment(accessToken, authorizationID) {
+      $.ajax({
+          url: "https://api-m.sandbox.paypal.com/v2/payments/authorizations/" + authorizationID + "/capture",
+          method: "POST",
+          headers: {
+              "Authorization": "Bearer " + accessToken,
+              "Content-Type": "application/json"
+          },
+          success: function(response) {
+              console.log("Payment captured successfully:", response);
+              $("#out_log").html(response);
+          },
+          error: function(error) {
+              console.log("Error capturing payment", error);
+          }
+      });
   }
 }
 var w=new Web();

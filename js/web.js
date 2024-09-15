@@ -196,7 +196,7 @@ class Web{
                             <div class="card-body p-4">        
                                 <div class="text-center">            
                                     <!-- Product name-->            
-                                    <b class="fw-bolder w-100" style="font-size:13px">${p.name}</b><br/>
+                                    <a class="href-title" href="javascript:;"><b class="fw-bolder title-prd w-100" style="font-size:13px">${p.name}</b><br/></a>
                                     ${p_star(p.star)}
                                     <!-- Product price-->           
                                     <span class="text-muted text-decoration-line-through">${p.sale}</span> ${p.price}<b>$</b>    
@@ -215,7 +215,7 @@ class Web{
                     `;
         var emp_p = $(p_html);
 
-        $(emp_p).find("img").click(() => {
+        $(emp_p).on('click', 'img, a', () => {
           w.show_product_by_data(p);
         });
 

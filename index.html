@@ -19,7 +19,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
     <script src="Carrot-Framework-Web/cr_firestore.js"></script>
     <script src="Carrot-Framework-Web/Carrot.js"></script>
-    <script src="js/web.js?v=8"></script>
+    <script src="js/web.js?v=9"></script>
 </head>
 
 <body>
@@ -141,15 +141,19 @@
     <script>
 
         function p_star(count) {
-            if (count == "") return "";
-            if (parseInt(count) > 0) {
+            if (count == "") count="0";
+            let count_star=parseInt(count);
+
                 var html_star = '<div class="d-flex justify-content-center small text-warning mb-2">';
-                for (var i = 0; i < count; i++) html_star += '<div class="bi-star-fill"></div>';
+                for (var i = 0; i < 5; i++){
+                    if(i>=count_star)
+                        html_star += '<div class="bi-star-fill"></div>';
+                    else
+                        html_star += '<div class="bi-star"></div>';
+                }
                 html_star += '</div>';
                 return html_star;
-            } else {
-                return "";
-            }
+
         }
 
         $(document).ready(function () {

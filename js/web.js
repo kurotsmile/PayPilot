@@ -65,6 +65,7 @@ class Web{
 
         $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
         $('#logo_txt').html(w.setting.logo_txt);
+        cr.site_name=w.setting.logo_txt;
 
         var page=cr.arg("p");
         if(page=="home") w.show_home();

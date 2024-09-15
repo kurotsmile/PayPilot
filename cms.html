@@ -40,8 +40,8 @@
             var p_product = new Post();
             p_product.id_collection = "product";
             p_product.label = "Sản phẩm";
-            p_product.data_form_add.fields.push(cms.field("name", "Tên sản phẩm", "text"));
-            p_product.data_form_add.fields.push(cms.field("price", "Giá sản phẩm", "text"));
+            p_product.data_form_add.fields.push(cms.field("name", "Tên sản phẩm", "text",'',true));
+            p_product.data_form_add.fields.push(cms.field("price", "Giá sản phẩm", "text",'',true));
             p_product.data_form_add.fields.push(cms.field("image", "Ảnh Sản phẩm", "file"));
             p_product.data_form_add.fields.push(cms.field("tip", "Mô tả", "textarea"));
             p_product.data_form_add.fields.push(cms.field("sale", "Bắt đầu giảm giá (Nhập giá gốc)", "text"));

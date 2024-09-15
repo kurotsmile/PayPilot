@@ -66,6 +66,60 @@ class Web{
     });
   }
 
+  show_all_product(){
+    $("#page_title").html("All Products");
+    $("#page_subtitle").html(this.setting.subtitle);
+    var html_p='';
+    $("#page_containt").html("Loading...");
+    cr_firestore.list("product", (datas) => {
+      $("#page_containt").html('<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="all_product_home"></div>');
+      $.each(datas, function (index, p) {
+        p.index = index;
+        var img = '';
+        if (p.image.trim() == "") img = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
+        else img = p.image;
+        var p_html = `
+                    <div class="col mb-5">
+                        <div class="card custom-card h-100">
+                            ${p.sale == "" ? '' : '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>'}    
+                            <!-- Product image-->    
+                            <img class="card-img-top" src="${img}" alt="..." />    
+                            <!-- Product details-->    
+                            <div class="card-body p-4">        
+                                <div class="text-center">            
+                                    <!-- Product name-->            
+                                    <b class="fw-bolder w-100" style="font-size:13px">${p.name}</b><br/>
+                                    ${p_star(p.star)}
+                                    <!-- Product price-->           
+                                    <span class="text-muted text-decoration-line-through">${p.sale}</span> ${p.price}<b>$</b>    
+                                </div>
+                            </div>    
+                            <!-- Product actions-->    
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">        
+                                <div class="text-center">
+                                <a data-id="${index}" data-name="${p.name}" data-price="${p.price}" class="btn btn-outline-dark mt-auto cart-btn" href="#">
+                                    <i class="bi bi-cart-plus"></i> Add to cart
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+        var emp_p = $(p_html);
+
+        $(emp_p).find("img").click(() => {
+          w.show_product_by_data(p);
+        });
+
+        $(emp_p).find('.cart-btn').on('click', function () {
+          const id = $(this).data('id'); const name = $(this).data('name'); const price = $(this).data('price');
+          addToCart(id, name, price); updateCartUI();
+        });
+        $("#all_product_home").append(emp_p);
+      });
+    });
+  }
+
   show_product_by_data(data){
     var img = '';
     if (data.image.trim() == "") img = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
@@ -76,7 +130,7 @@ class Web{
       html_p+='<div class="col-md-4 col-12 col-lg-4"><img class="w-100" src="'+img+'"/></div>';
       html_p+='<div class="col-md-8 col-12 col-lg-8">'
         html_p+='<b style="font-size:30px;">'+data.price+'$</b><br/>';
-        html_p+='<a data-id="1" data-name="'+data.name+'" data-price="'+data.price+'" class="btn btn-outline-dark mt-auto cart-btn" href="#"><i class="bi bi-cart-plus"></i> Add to cart</a><br/><br/>';
+        html_p+='<a onclick="w.add_cart(this);return false;" data-id="'+data.index+'" data-name="'+data.name+'" data-price="'+data.price+'" class="btn btn-outline-dark mt-auto cart-btn" href="#"><i class="bi bi-cart-plus"></i> Add to cart</a><br/><br/>';
         html_p+=data.tip;
       html_p+='</div>';
     html_p+='</div>';
@@ -86,11 +140,15 @@ class Web{
   }
 
   add_cart(emp){
-    const id = $(this).data('id'); 
-    const name = $(this).data('name');
-    const price = $(this).data('price');
+    const id = $(emp).data('id'); 
+    const name = $(emp).data('name');
+    const price = $(emp).data('price');
     addToCart(id, name, price); 
     updateCartUI();
+    Swal.fire({
+      title:"Cart",
+      text:"Product added to cart successfully!"
+    });
   }
 }
 var w=new Web();

@@ -337,7 +337,8 @@ class Web{
     var html_p='<div class="container px-4 px-lg-5 mt-5">';
     html_p+='<div class="row">';
       html_p+='<div class="col-md-4 col-12 col-lg-4"><img class="w-100" src="'+img+'"/></div>';
-      html_p+='<div class="col-md-8 col-12 col-lg-8">'
+      html_p+='<div class="col-md-8 col-12 col-lg-8">';
+        html_p+='<div class="text-muted display-3">'+data.name+'</div>';
         html_p+='<b style="font-size:30px;">'+data.price+'$</b><br/>';
         html_p+='<a onclick="w.add_cart(this);return false;" data-id="'+data.index+'" data-name="'+data.name+'" data-price="'+data.price+'" class="btn btn-outline-dark mt-auto cart-btn" href="#"><i class="bi bi-cart-plus"></i> Add to cart</a> ';
         html_p+='<a onclick="cr.show_share();return false;" class="btn btn-outline-dark mt-auto cart-btn" href="#"><i class="fas fa-share-alt"></i> Share</a><br/><br/>';

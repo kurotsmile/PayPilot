@@ -113,6 +113,7 @@ class Web{
 
   show_pp(){
     cr.top();
+    $("#page_title").html('Privacy Policy');
     cr.change_title("Privacy Policy","index.html?p=privacy_policy");
     cr.show_pp("#page_containt",()=>{
       $("#page_containt ul").remove();

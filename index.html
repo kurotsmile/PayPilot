@@ -141,15 +141,21 @@
     <script>
 
         function p_star(count) {
-            if (count == "") return "";
-            if (parseInt(count) > 0) {
-                var html_star = '<div class="d-flex justify-content-center small text-warning mb-2">';
-                for (var i = 0; i < count; i++) html_star += '<div class="bi-star-fill"></div>';
-                html_star += '</div>';
-                return html_star;
-            } else {
-                return "";
+            if (count === "" || isNaN(count) || count < 0) {
+                count = 0;
             }
+            var count = parseInt(count);
+            var html_star = '<div class="d-flex justify-content-center small mb-2 w-100 icons-start">';
+            var maxStars = 5;
+            for (var i = 1; i <= maxStars; i++) {
+                if (i <= count) {
+                    html_star += '<i class="fas fa-star text-warning"></i>';
+                } else {
+                    html_star += '<i class="far fa-star" style="color: #f3f314"></i>'; 
+                }
+            }
+            html_star += '</div>';
+            return html_star;
         }
 
         $(document).ready(function () {
@@ -167,12 +173,12 @@
                         <div class="card custom-card h-100">
                             ${p.sale == "" ? '' : '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>'}    
                             <!-- Product image-->    
-                            <img class="card-img-top" src="${img}" alt="..." />    
+                            <img class="card-img-top img-prd" src="${img}" alt="..." />    
                             <!-- Product details-->    
                             <div class="card-body p-4">        
                                 <div class="text-center">            
                                     <!-- Product name-->            
-                                    <b class="fw-bolder w-100" style="font-size:13px">${p.name}</b><br/>
+                                    <a class="href-title" href="javascript:;"><b class="fw-bolder title-prd w-100 h-100" style="font-size:13px">${p.name}</b><br/></a>
                                     ${p_star(p.star)}
                                     <!-- Product price-->           
                                     <span class="text-muted text-decoration-line-through">${p.sale}</span> ${p.price}<b>$</b>    
@@ -191,7 +197,7 @@
                     `;
                     var emp_p = $(p_html);
 
-                    $(emp_p).find("img").click(()=>{
+                    $(emp_p).on('click','img, a', () => {
                         w.show_product_by_data(p);
                     });
 

@@ -138,7 +138,7 @@ class Web{
             return actions.order.authorize().then(function (authorization) {
               var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
               console.log('Authorization ID:', authorizationID);
-              window.location.href = "pay_done.html?authorization_id=" + authorizationID;
+              window.location.href = "index.html?p=done&authorization_id=" + authorizationID;
             });
           },
           onCancel: function (data) {

@@ -67,6 +67,7 @@ class Web{
   }
 
   show_all_product(){
+    cr.top();
     $("#page_title").html("All Products");
     $("#page_subtitle").html(this.setting.subtitle);
     var html_p='';
@@ -145,10 +146,7 @@ class Web{
     const price = $(emp).data('price');
     addToCart(id, name, price); 
     updateCartUI();
-    Swal.fire({
-      title:"Cart",
-      text:"Product added to cart successfully!"
-    });
+    cr.msg("Product added to cart successfully!","Cart","success");
   }
 }
 var w=new Web();

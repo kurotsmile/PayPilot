@@ -259,7 +259,7 @@ class Web{
           },
           success: function(response) {
               var accessToken = response.access_token;
-              capturePayment(accessToken,authorizationID);
+              w.capturePayment(accessToken,authorizationID);
           },
           error: function(error) {
               console.log("Error fetching Access Token", error);

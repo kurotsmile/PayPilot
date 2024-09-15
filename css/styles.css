@@ -10886,3 +10886,16 @@ textarea.form-control-lg {
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
+
+#page_title{
+  font-family: 'Caveat', cursive;
+}
+
+header{
+  background-image: url('../images/banner.png');
+}
+
+#page_subtitle{
+  font-family: 'Caveat', cursive;
+  color: yellow !important;
+}

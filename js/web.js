@@ -78,7 +78,13 @@ class Web{
         else w.show_home();
 
         $.each(w.setting_footer, function(key, val) {
-            $("#"+key).html(val);
+            if($("#"+key).length==0) return true;
+
+            if(cr.alive(val)){
+              $("#"+key).html(val);
+            }else{
+              $("#"+key).parent().remove();
+            }
         });
     });
   }
@@ -304,14 +310,31 @@ class Web{
     });
   }
 
-  show_all_product(){
-    cr.change_title("All Product","index.html?p=all_products");
+  show_all_product(type="All Products"){
+    cr.change_title(type,"index.html?p=all_products");
     cr.top();
-    $("#page_title").html("All Products");
+    $("#page_title").html(type);
     $("#page_subtitle").html(this.setting.subtitle);
-    var html_p='';
     $("#page_containt").html("Loading...");
     cr_firestore.list("product", (datas) => {
+      if(type=='Popular Items'){
+        datas.sort(function(a, b) {
+          return parseInt(b.star) - parseInt(a.star);
+        });
+      }
+
+      if(type=='Ascending price'){
+        datas.sort(function(a, b) {
+          return parseInt(a.price) - parseInt(b.price);
+        });
+      }
+
+      if(type=='Descending price'){
+        datas.sort(function(a, b) {
+          return parseInt(b.price) - parseInt(a.price);
+        });
+      }
+
       $("#page_containt").html('<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="all_product_home"></div>');
       $.each(datas, function (index, p) {
         p.index = index;

@@ -52,9 +52,10 @@ function updateCartUI() {
 class Web{
   setting=null;
   setting_footer=null;
+  data_bill=null;
 
   onLoad(){
-
+    w.data_bill=JSON.parse(localStorage.getItem('data_bill')) || [];
     cr_firestore.list("setting",datas=>{
 
         $.each(datas,function(index,setting){
@@ -67,11 +68,14 @@ class Web{
         var page=cr.arg("p");
         if(page=="home") w.show_home();
         else if(page=="product") w.show_product();
+        else if(page=="privacy_policy") w.show_pp();
         else if(page=="cart") w.show_cart();
         else if(page=="checkout") w.show_checkout();
         else if(page=="done") w.show_pay_done();
         else if(page=="about") w.show_about();
         else w.show_home();
+
+        $("#contact_address").html(w.setting_footer.contact_address);
 
     });
   }
@@ -93,6 +97,12 @@ class Web{
     $("#page_title").html("Payment");
     cr.get("page/pay_done.html",data=>{
       $("#page_containt").html(data);
+      
+      if(w.data_bill!=null){
+        cr_firestore.add(w.data_bill,"order",()=>{
+
+        });
+      }
       w.get_token(cr.arg('authorization_id'));
     });
   }
@@ -132,6 +142,7 @@ class Web{
           createOrder: function (data, actions) {
             var allFilled = true;
             w.error_pay=false;
+            
 
             $('input[required]').each(function() {
               if ($(this).val() === '') {
@@ -142,9 +153,18 @@ class Web{
                 $(this).css('border', '');
               }
             });
+
             if(allFilled==false){
               cr.msg("Please fill in all information!","Missing data","warning")
               return true;
+            }else{
+              let data_bill={};
+              $('input').each(function() {
+                  var id_field=$(this).attr("id");
+                  data_bill[id_field]=$(this).val();
+              });
+              w.data_bill=data_bill;
+              localStorage.setItem("data_bill",JSON.stringify(data_bill));
             }
             // Lấy giá trị sản phẩm, phí vận chuyển và thuế từ DOM hoặc tính toán chúng
             var itemTotal = parseFloat($('#tt_price').html()); // Giá trị của sản phẩm

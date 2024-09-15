@@ -35,6 +35,7 @@
             p_order.data_form_add.fields.push(cms.field('email', "Email"));
             p_order.data_form_add.fields.push(cms.field('country', "Country"));
             p_order.data_form_add.fields.push(cms.field('orderNotes', "OrderNotes"));
+            p_order.list_fields_table=["firstName","lastName","phone","email","orderNotes"];
             cms.add(p_order);
 
             var p_product = new Post();

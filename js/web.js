@@ -272,7 +272,7 @@ class Web{
           url: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
           method: "POST",
           headers: {
-              "Authorization": "Basic " + btoa("AaEa6rk64Piu7oaOnDewMfrYJOV8VqbaDL_RMkkyhWBygCs0sOegbcvQdE4-xAyeaUgysmKqC1eoTx0y:EBCxwMeMboj4I8W2k8gsWjhCUPv6yfLrvZZ0dLh7y5eytg7lYDCruIfLhXCK5F5Gxp0_4YHmktYKKyoU"),
+              "Authorization": "Basic " + btoa(w.setting.api_paypal+":"+w.setting.api_paypal_scenrest),
               "Content-Type": "application/x-www-form-urlencoded"
           },
           data: {

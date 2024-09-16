@@ -81,6 +81,8 @@ class Web{
 
         $.each(w.setting_footer, function(key, val) {w.set_info_emp(key,val)});
         $.each(w.setting_footer_info, function(key, val) {w.set_info_emp(key,val)});
+    },()=>{
+      w.onLoad();
     });
   }
 
@@ -97,7 +99,7 @@ class Web{
   show_home(){
       $("#page_title").html(this.setting.title);
       $("#page_subtitle").html(this.setting.subtitle);
-      $("#all_product_home").html("Loading...");
+      $("#all_product_home").html('<b><i class="fas fa-spinner fa-spin"></i> Loading...</b>');
       cr_firestore.list("product", (datas) => {
           $("#all_product_home").empty();
           $.each(datas, function (index, p) {
@@ -320,7 +322,7 @@ class Web{
     cr.top();
     $("#page_title").html(type);
     $("#page_subtitle").html(this.setting.subtitle);
-    $("#page_containt").html("Loading...");
+    $("#page_containt").html('<div class="row text-center"><div class="col-12"><b><i class="fas fa-spinner fa-spin"></i> Loading...</b></div></div>');
     cr_firestore.list("product", (datas) => {
       if(type=='Popular Items'){
         datas.sort(function(a, b) {

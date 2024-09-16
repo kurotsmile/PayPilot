@@ -240,88 +240,90 @@ class Web{
     $("#page_title").html('<i class="fas fa-cart-arrow-down"></i> Checkout');
     cr.get("page/checkout.html",data=>{
       $("#page_containt").html(data);
+        setTimeout(()=>{
         // Tạo PayPal Button
-        paypal.Buttons({
-          createOrder: function (data, actions) {
-            var allFilled = true;
-            w.error_pay=false;
-            
+          paypal.Buttons({
+            createOrder: function (data, actions) {
+              var allFilled = true;
+              w.error_pay=false;
+              
 
-            $('input[required]').each(function() {
-              if ($(this).val() === '') {
-                allFilled = false;
-                w.error_pay=true;
-                $(this).css('border', '2px solid red');
-              } else {
-                $(this).css('border', '');
-              }
-            });
-
-            if(allFilled==false){
-              cr.msg("Please fill in all information!","Missing data","warning")
-              return true;
-            }else{
-              let data_bill={};
-              $('input').each(function() {
-                  var id_field=$(this).attr("id");
-                  data_bill[id_field]=$(this).val();
+              $('input[required]').each(function() {
+                if ($(this).val() === '') {
+                  allFilled = false;
+                  w.error_pay=true;
+                  $(this).css('border', '2px solid red');
+                } else {
+                  $(this).css('border', '');
+                }
               });
-              w.data_bill=data_bill;
-              localStorage.setItem("data_bill",JSON.stringify(data_bill));
-            }
-            // Lấy giá trị sản phẩm, phí vận chuyển và thuế từ DOM hoặc tính toán chúng
-            var itemTotal = parseFloat($('#tt_price').html()); // Giá trị của sản phẩm
-            var shippingCost = parseFloat(w.setting.shipping_price);
-            var taxAmount = parseFloat(w.setting.tax_price);
 
-            return actions.order.create({
-              purchase_units: [{
-                amount: {
-                  currency_code: "USD",
-                  value: (itemTotal + shippingCost + taxAmount).toFixed(2), // Tổng giá trị đơn hàng bao gồm phí vận chuyển và thuế
-                  breakdown: {
-                    item_total: {
-                      currency_code: "USD",
-                      value: itemTotal.toFixed(2) // Giá trị của sản phẩm
-                    },
-                    shipping: {
-                      currency_code: "USD",
-                      value: shippingCost.toFixed(2) // Phí vận chuyển
-                    },
-                    tax_total: {
-                      currency_code: "USD",
-                      value: taxAmount.toFixed(2) // Thuế
+              if(allFilled==false){
+                cr.msg("Please fill in all information!","Missing data","warning")
+                return true;
+              }else{
+                let data_bill={};
+                $('input').each(function() {
+                    var id_field=$(this).attr("id");
+                    data_bill[id_field]=$(this).val();
+                });
+                w.data_bill=data_bill;
+                localStorage.setItem("data_bill",JSON.stringify(data_bill));
+              }
+              // Lấy giá trị sản phẩm, phí vận chuyển và thuế từ DOM hoặc tính toán chúng
+              var itemTotal = parseFloat($('#tt_price').html()); // Giá trị của sản phẩm
+              var shippingCost = parseFloat(w.setting.shipping_price);
+              var taxAmount = parseFloat(w.setting.tax_price);
+
+              return actions.order.create({
+                purchase_units: [{
+                  amount: {
+                    currency_code: "USD",
+                    value: (itemTotal + shippingCost + taxAmount).toFixed(2), // Tổng giá trị đơn hàng bao gồm phí vận chuyển và thuế
+                    breakdown: {
+                      item_total: {
+                        currency_code: "USD",
+                        value: itemTotal.toFixed(2) // Giá trị của sản phẩm
+                      },
+                      shipping: {
+                        currency_code: "USD",
+                        value: shippingCost.toFixed(2) // Phí vận chuyển
+                      },
+                      tax_total: {
+                        currency_code: "USD",
+                        value: taxAmount.toFixed(2) // Thuế
+                      }
                     }
                   }
-                }
-              }]
-            });
-          },
-          onApprove: function (data, actions) {
-            return actions.order.authorize().then(function (authorization) {
-              var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
-              console.log('Authorization ID:', authorizationID);
-              window.location.href = "index.html?p=done&authorization_id=" + authorizationID;
-            });
-          },
-          onCancel: function (data) {
-            Swal.fire({
-              icon: 'info',
-              title: 'Payment Cancelled',
-              text: 'You have cancelled the payment.',
-            });
-          },
-          onError: function (err) {
-            console.log(err);
-            if(w.error_pay==false){
-              Swal.fire({
-                icon: 'error',
-                title: 'Payment Error',
-                text: 'There was an issue with your payment. Please try again.',
+                }]
               });
+            },
+            onApprove: function (data, actions) {
+              return actions.order.authorize().then(function (authorization) {
+                var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
+                console.log('Authorization ID:', authorizationID);
+                window.location.href = "index.html?p=done&authorization_id=" + authorizationID;
+              });
+            },
+            onCancel: function (data) {
+              Swal.fire({
+                icon: 'info',
+                title: 'Payment Cancelled',
+                text: 'You have cancelled the payment.',
+              });
+            },
+            onError: function (err) {
+              console.log(err);
+              if(w.error_pay==false){
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Payment Error',
+                  text: 'There was an issue with your payment. Please try again.',
+                });
+              }
             }
-          }
-        }).render('#paypal-button-container');
+          }).render('#paypal-button-container');
+        },1000);
         updateCartUI();
     });
   }

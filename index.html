@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
     <script src="Carrot-Framework-Web/cr_firestore.js"></script>
     <script src="Carrot-Framework-Web/Carrot.js"></script>
-    <script src="js/web.js?v=15"></script>
+    <script src="js/web.js?v=16"></script>
 </head>
 
 <body>
@@ -83,10 +83,9 @@
                     <!-- Grid column -->
                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4"><!-- Content -->
                         <h6 class="text-uppercase fw-bold mb-4">
-                            <i class="fas fa-gem me-3"></i>Company name
+                            <i class="fas fa-gem me-3"></i> <span id="footer_company"></span>
                         </h6>
-                        <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit
-                            amet, consectetur adipisicing elit.</p>
+                        <p id="footer_company_tip"></p>
                     </div>
                     <!-- Grid column -->
 
@@ -127,7 +126,7 @@
 
         <!-- Copyright -->
         <div class="text-center p-4" style="background-color: rgb(255 155 155 / 5%);">
-            © 2024 Copyright By Me-Dev
+            © <span id="footer_copyright"></span>
         </div>
         <!-- Copyright -->
     </footer>

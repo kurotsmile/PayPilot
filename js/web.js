@@ -52,6 +52,7 @@ function updateCartUI() {
 class Web{
   setting=null;
   setting_footer=null;
+  setting_footer_info=null;
   data_bill=null;
 
   onLoad(){
@@ -61,6 +62,7 @@ class Web{
         $.each(datas,function(index,setting){
           if(setting.id_doc=="setting_home_shop") w.setting=setting;
           if(setting.id_doc=="setting_footer_shop") w.setting_footer=setting;
+          if(setting.id_doc=="setting_footer_info") w.setting_footer_info=setting;
         });
 
         $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
@@ -77,16 +79,19 @@ class Web{
         else if(page=="about") w.show_about();
         else w.show_home();
 
-        $.each(w.setting_footer, function(key, val) {
-            if($("#"+key).length==0) return true;
-
-            if(cr.alive(val)){
-              $("#"+key).html(val);
-            }else{
-              $("#"+key).parent().remove();
-            }
-        });
+        $.each(w.setting_footer, function(key, val) {w.set_info_emp(key,val)});
+        $.each(w.setting_footer_info, function(key, val) {w.set_info_emp(key,val)});
     });
+  }
+
+  set_info_emp(key,val){
+    if($("#"+key).length==0) return true;
+
+    if(cr.alive(val)){
+      $("#"+key).html(val);
+    }else{
+      $("#"+key).parent().remove();
+    }
   }
 
   show_home(){

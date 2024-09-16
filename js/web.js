@@ -260,8 +260,8 @@ class Web{
             }
             // Lấy giá trị sản phẩm, phí vận chuyển và thuế từ DOM hoặc tính toán chúng
             var itemTotal = parseFloat($('#tt_price').html()); // Giá trị của sản phẩm
-            var shippingCost = 3.00;
-            var taxAmount = 4.00;
+            var shippingCost = w.setting.shipping_price;
+            var taxAmount = w.setting.tax_price;
 
             return actions.order.create({
               purchase_units: [{

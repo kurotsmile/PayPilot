@@ -81,6 +81,8 @@ class Web{
 
         $.each(w.setting_footer, function(key, val) {w.set_info_emp(key,val)});
         $.each(w.setting_footer_info, function(key, val) {w.set_info_emp(key,val)});
+
+        if(cr.alive(w.setting_footer_info.footer_company_logo)) $("#footer_company_logo").attr("src",w.setting_footer_info.footer_company_logo);
     },()=>{
       w.onLoad();
     });

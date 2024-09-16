@@ -25,6 +25,8 @@ function updateCartUI() {
   let total = 0;
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   let itemCount = 0;
+  let tax=parseFloat(w.setting.tax_price);
+  let shipping=parseFloat(w.setting.shipping_price);
 
   if(cart.length>0){
     cart.forEach(item => {
@@ -41,7 +43,10 @@ function updateCartUI() {
   }else{
     $('#cart-items').html('<li><i class="fas fa-sad-tear"></i> No Product!</li>');
   }
-  $('#cart-total').html(`<h4>Total: $<span id="tt_price">${total.toFixed(2)}</span></h4>`);
+
+  $('#cart-shipping').html(`$${shipping.toFixed(2)}`);
+  $('#cart-tax').html(`$${tax.toFixed(2)}`);
+  $('#cart-total').html(`<b>Total</b><h4>$<span id="tt_price">${total.toFixed(2)}</span></h4>`);
   $("#count_cart").html(itemCount);
 }
 
@@ -118,6 +123,7 @@ class Web{
           htm_view_all_product+='</div>';
           $("#all_product_home").append(htm_view_all_product);
       });
+      updateCartUI();
   }
 
   show_about(){
@@ -126,6 +132,7 @@ class Web{
     cr.get("page/about.html",data=>{
       $("#page_containt").html(data);
     });
+    updateCartUI();
   }
 
   show_pay_done(){
@@ -139,7 +146,9 @@ class Web{
         });
       }
       w.get_token(cr.arg('authorization_id'));
+      updateCartUI();
     });
+    
   }
 
   show_cart(){
@@ -197,9 +206,9 @@ class Web{
             <!-- Product actions-->    
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">        
                 <div class="text-center">
-                <a data-id="${p.index}" data-name="${p.name}" data-price="${p.price}" class="btn btn-outline-dark mt-auto cart-btn" href="#">
+                <div data-id="${p.index}" data-name="${p.name}" data-price="${p.price}"  onclick="w.add_cart(this);return false;" class="btn btn-outline-dark mt-auto cart-btn">
                     <i class="bi bi-cart-plus"></i> Add to cart
-                </a>
+                </div>
                 </div>
             </div>
         </div>
@@ -207,14 +216,11 @@ class Web{
     `;
     var emp_p = $(p_html);
 
-    $(emp_p).on('click','img, a', () => {
+    $(emp_p).find("img,a").click(() => {
         w.show_product_by_data(p);
+        return false;
     });
 
-    $(emp_p).find('.cart-btn').on('click', function () {
-        const id = $(this).data('id'); const name = $(this).data('name'); const price = $(this).data('price');
-        addToCart(id, name, price); updateCartUI();
-    });
     return emp_p;
   }
 
@@ -350,6 +356,8 @@ class Web{
         p.index = index;
         $("#all_product_home").append(w.product_item(p));
       });
+
+      updateCartUI();
     });
   }
 
@@ -382,6 +390,7 @@ class Web{
     html_p+='</div>'
     $("#page_title").html(data.name);
     $("#page_containt").html(html_p);
+    updateCartUI();
   }
 
   add_cart(emp){
@@ -435,17 +444,6 @@ class Web{
 var w=new Web();
 
 $(document).ready(function () {
-  updateCartUI();
-
-  // Add product to cart
-  $('.cart-btn').on('click', function () {
-    const id = $(this).data('id');
-    const name = $(this).data('name');
-    const price = $(this).data('price');
-
-    addToCart(id, name, price);
-    updateCartUI();
-  });
 
   // Remove product from cart
   $(document).on('click', '.remove-btn', function () {
@@ -454,11 +452,6 @@ $(document).ready(function () {
     updateCartUI();
   });
 
-  // Proceed to checkout
-  $('#checkout-btn').on('click', function () {
-    window.location.href = 'checkout.html?v=1'; // Redirect to checkout page
-  });
-  
   cr.site_name="My Shop";
   cr.site_url="https://payshop.vercel.app/";
   cr.onLoad();

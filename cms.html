@@ -22,7 +22,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
-            cms.mode="pub";
             var p_order = new Post();
             p_order.id_collection = "order";
             p_order.label = "Đơn đặt hàng";
@@ -90,10 +89,12 @@
             cr.setColor("#0da4fd");
             cr.onLoad();
             cr.add_btn_top();
-
-            cr_firestore.id_project = "xoilacfoodball";
-            cr_firestore.api_key = "AIzaSyD2cbGXjqxKHzmtARX6ejsCDJePDpth39Y";
-            cms.onLoad();
+            cr.get_json("config.json",(config_data)=>{
+                cr_firestore.id_project = config_data.id_project;
+                cr_firestore.api_key = config_data.api_key;
+                cms.mode=config_data.cms_mode;
+                cms.onLoad();
+            });
         });
     </script>
 </head>

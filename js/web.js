@@ -1,7 +1,3 @@
-
-cr_firestore.id_project = "xoilacfoodball";
-cr_firestore.api_key = "AIzaSyD2cbGXjqxKHzmtARX6ejsCDJePDpth39Y";
-
 // Function to add product to cart
 function addToCart(id, name, price) {
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -57,33 +53,38 @@ class Web{
 
   onLoad(){
     w.data_bill=JSON.parse(localStorage.getItem('data_bill')) || [];
-    cr_firestore.list("setting",datas=>{
-
-        $.each(datas,function(index,setting){
-          if(setting.id_doc=="setting_home_shop") w.setting=setting;
-          if(setting.id_doc=="setting_footer_shop") w.setting_footer=setting;
-          if(setting.id_doc=="setting_footer_info") w.setting_footer_info=setting;
-        });
-
-        $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
-        $('#logo_txt').html(w.setting.logo_txt);
-        cr.site_name=w.setting.logo_txt;
-
-        var page=cr.arg("p");
-        if(page=="home") w.show_home();
-        else if(page=="product") w.show_product();
-        else if(page=="privacy_policy") w.show_pp();
-        else if(page=="cart") w.show_cart();
-        else if(page=="checkout") w.show_checkout();
-        else if(page=="done") w.show_pay_done();
-        else if(page=="about") w.show_about();
-        else w.show_home();
-
-        $.each(w.setting_footer, function(key, val) {w.set_info_emp(key,val)});
-        $.each(w.setting_footer_info, function(key, val) {w.set_info_emp(key,val)});
-
-        if(cr.alive(w.setting_footer_info.footer_company_logo)) $("#footer_company_logo").attr("src",w.setting_footer_info.footer_company_logo);
-    },()=>{
+    cr.get_json("config.json",(config_data)=>{
+        cr_firestore.id_project = config_data.id_project;
+        cr_firestore.api_key = config_data.api_key;
+        cr_firestore.list("setting",datas=>{
+          $.each(datas,function(index,setting){
+            if(setting.id_doc=="setting_home_shop") w.setting=setting;
+            if(setting.id_doc=="setting_footer_shop") w.setting_footer=setting;
+            if(setting.id_doc=="setting_footer_info") w.setting_footer_info=setting;
+          });
+  
+          $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
+          $('#logo_txt').html(w.setting.logo_txt);
+          cr.site_name=w.setting.logo_txt;
+  
+          var page=cr.arg("p");
+          if(page=="home") w.show_home();
+          else if(page=="product") w.show_product();
+          else if(page=="privacy_policy") w.show_pp();
+          else if(page=="cart") w.show_cart();
+          else if(page=="checkout") w.show_checkout();
+          else if(page=="done") w.show_pay_done();
+          else if(page=="about") w.show_about();
+          else w.show_home();
+  
+          $.each(w.setting_footer, function(key, val) {w.set_info_emp(key,val)});
+          $.each(w.setting_footer_info, function(key, val) {w.set_info_emp(key,val)});
+  
+          if(cr.alive(w.setting_footer_info.footer_company_logo)) $("#footer_company_logo").attr("src",w.setting_footer_info.footer_company_logo);
+      },()=>{
+        w.onLoad();
+      });
+    },(eror)=>{
       w.onLoad();
     });
   }

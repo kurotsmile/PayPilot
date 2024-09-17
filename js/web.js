@@ -75,11 +75,10 @@ class Web{
             if(setting.id_doc=="setting_footer_shop") w.setting_footer=setting;
             if(setting.id_doc=="setting_footer_info") w.setting_footer_info=setting;
             if(setting.id_doc=="setting_pay") w.setting_pay=setting;
+            if(setting.id_doc=="setting_pp_1") w.paypal_app.push({"api_paypal":setting.api_paypal,"api_paypal_scenrest":setting.api_paypal_scenrest});
+            if(setting.id_doc=="setting_pp_2") w.paypal_app.push({"api_paypal":setting.api_paypal,"api_paypal_scenrest":setting.api_paypal_scenrest});
+            if(setting.id_doc=="setting_pp_3") w.paypal_app.push({"api_paypal":setting.api_paypal,"api_paypal_scenrest":setting.api_paypal_scenrest});
           });
-
-          w.paypal_app.push({"api_paypal":w.setting.api_paypal,"api_paypal_scenrest":w.setting.api_paypal_scenrest});
-          w.paypal_app.push({"api_paypal":w.setting.api_paypal_2,"api_paypal_scenrest":w.setting.api_paypal_scenrest_2});
-          w.paypal_app.push({"api_paypal":w.setting.api_paypal_3,"api_paypal_scenrest":w.setting.api_paypal_scenrest_3});
 
           w.index_app_paypay_cur=parseInt(w.setting_pay.acc_paypal_sel);
           w.api_paypal=w.paypal_app[w.index_app_paypay_cur].api_paypal;

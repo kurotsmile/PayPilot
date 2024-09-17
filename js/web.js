@@ -61,6 +61,7 @@ class Web{
   setting=null;
   setting_footer=null;
   setting_footer_info=null;
+  setting_pay=null;
   data_bill=null;
 
   onLoad(){
@@ -73,12 +74,14 @@ class Web{
             if(setting.id_doc=="setting_home_shop") w.setting=setting;
             if(setting.id_doc=="setting_footer_shop") w.setting_footer=setting;
             if(setting.id_doc=="setting_footer_info") w.setting_footer_info=setting;
+            if(setting.id_doc=="setting_pay") w.setting_pay=setting;
           });
 
           w.paypal_app.push({"api_paypal":w.setting.api_paypal,"api_paypal_scenrest":w.setting.api_paypal_scenrest});
           w.paypal_app.push({"api_paypal":w.setting.api_paypal_2,"api_paypal_scenrest":w.setting.api_paypal_scenrest_2});
           w.paypal_app.push({"api_paypal":w.setting.api_paypal_3,"api_paypal_scenrest":w.setting.api_paypal_scenrest_3});
 
+          w.index_app_paypay_cur=parseInt(w.setting_pay.acc_paypal_sel);
           w.api_paypal=w.paypal_app[w.index_app_paypay_cur].api_paypal;
           w.api_paypal_scenrest=w.paypal_app[w.index_app_paypay_cur].api_paypal_scenrest;
   
@@ -158,6 +161,7 @@ class Web{
         cr_firestore.add(w.data_bill,"order",()=>{
 
         });
+        w.add_order_pay();
       }
       w.get_token(cr.arg('authorization_id'));
       updateCartUI();
@@ -456,6 +460,15 @@ class Web{
           }
       });
   }
+
+  add_order_pay(){
+    w.setting_pay.order_paypal_count=parseInt(w.setting_pay.order_paypal_count)+1;
+    if(w.setting_pay.order_paypal_count>20) w.setting_pay.acc_paypal_sel=2;
+    else if(w.setting_pay.order_paypal_count>10) w.setting_pay.acc_paypal_sel=1;
+    else w.setting_pay.acc_paypal_sel=0;
+    cr_firestore.set(w.setting_pay,"setting","setting_pay");
+  }
+
 }
 var w=new Web();
 

@@ -93,6 +93,7 @@ class Web{
           if(page=="home") w.show_home();
           else if(page=="product") w.show_product();
           else if(page=="privacy_policy") w.show_pp();
+          else if(page=='terms_of_service') w.show_tos();
           else if(page=="cart") w.show_cart();
           else if(page=="checkout") w.show_checkout();
           else if(page=="done") w.show_pay_done();
@@ -252,6 +253,16 @@ class Web{
     updateCartUI();
   }
 
+  show_tos(){
+    cr.top();
+    $("#page_title").html('Terms of service');
+    cr.change_title("Terms of service","index.html?p=terms_of_service");
+    cr.show_tos("#page_containt",()=>{
+
+    });
+    updateCartUI();
+  }
+
   show_checkout(){
     cr.change_title("Checkout","index.html?p=checkout");
     cr.top();
@@ -353,30 +364,42 @@ class Web{
     $("#page_subtitle").html(this.setting.subtitle);
     $("#page_containt").html('<div class="row text-center"><div class="col-12"><b><i class="fas fa-spinner fa-spin"></i> Loading...</b></div></div>');
     cr_firestore.list("product", (datas) => {
+
+      function search_product(key) {
+        var result = $.grep(datas, function(datas) {
+            return datas.name.toLowerCase().indexOf(key.toLowerCase()) !== -1;
+        });
+        return result;
+      }
+
       if(type=='Popular Items'){
         datas.sort(function(a, b) {
           return parseInt(b.star) - parseInt(a.star);
         });
-      }
-
-      if(type=='Ascending price'){
+      }else if(type=='Ascending price'){
         datas.sort(function(a, b) {
           return parseInt(a.price) - parseInt(b.price);
         });
-      }
-
-      if(type=='Descending price'){
+      }else if(type=='Descending price'){
         datas.sort(function(a, b) {
           return parseInt(b.price) - parseInt(a.price);
         });
+      }else if(type=='All Products'){
+
+      }else{
+        datas=search_product(type);
+        $("#page_title").html('Found '+datas.length+' results related to "'+type+'"');
       }
 
-      $("#page_containt").html('<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="all_product_home"></div>');
-      $.each(datas, function (index, p) {
-        p.index = index;
-        $("#all_product_home").append(w.product_item(p));
-      });
-
+      if(datas.length>0){
+        $("#page_containt").html('<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="all_product_home"></div>');
+        $.each(datas, function (index, p) {
+          p.index = index;
+          $("#all_product_home").append(w.product_item(p));
+        });
+      }else{
+        $("#page_containt").html('<div class="row"><div class="col-12 text-center"><b><i class="fas fa-frown"></i></br>No Products!</b></div></div>');
+      }
       updateCartUI();
     });
   }
@@ -387,6 +410,13 @@ class Web{
        w.show_product_by_data(data);
     },()=>{
       w.show_product();
+    });
+  }
+
+  show_search(){
+    cr.showSearch((key)=>{
+      w.show_all_product(key);
+      updateCartUI();
     });
   }
 

@@ -34,12 +34,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_checkout();return false;">Checkout</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_cart();return false;">Cart</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_pp();return false;">Privacy Policy</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_about();return false;">About</a></li>
-                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#" onclick="w.show_all_product();return false;">All Products</a></li>
                             <li><hr class="dropdown-divider" /></li>
@@ -48,6 +43,11 @@
                             <li><a class="dropdown-item" href="#" onclick="w.show_all_product('Descending price');return false;">Descending price</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_checkout();return false;">Checkout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_pp();return false;">Privacy Policy</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_tos();return false;">Terms of service</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_about();return false;">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="w.show_search();return false;"><i class="fas fa-search"></i> Search</a></li>
                 </ul>
                 <div class="d-flex">
                     <a class="btn btn-outline-dark" href="#" onclick="w.show_cart();return false;"><i class="bi-cart-fill me-1"></i>Cart<span id="count_cart" class="badge bg-dark text-white ms-1 rounded-pill">0</span></a>
@@ -101,10 +101,10 @@
                     <!-- Grid column -->
                     <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4"><!-- Links -->
                         <h6 class="text-uppercase fw-bold mb-4">Useful links</h6>
-                        <p><a href="#!" class="text-reset">Pricing</a></p>
-                        <p><a href="#!" class="text-reset">Settings</a></p>
-                        <p><a href="#!" class="text-reset">Orders</a></p>
-                        <p><a href="#!" class="text-reset">Help</a></p>
+                        <p><a class="text-reset" href="#" onclick="w.show_cart();return false;">Cart</a></p>
+                        <p><a class="text-reset" href="#" onclick="w.show_pp();return false;">Privacy Policy</a></p>
+                        <p><a class="text-reset"  href="#" onclick="w.show_tos();return false;">Terms of service</a></p>
+                        <p><a class="text-reset" href="#" onclick="w.show_about();return false;">About</a></p>
                     </div>
                     <!-- Grid column -->
 

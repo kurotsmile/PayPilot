@@ -82,8 +82,8 @@
             setting_pay.icon='<i class="fab fa-cc-paypal"></i>';
             setting_pay.id_collection = "setting_pay";
             setting_pay.label = "Trạng thái thanh toán";
-            setting_pay.data_form_add.fields.push(cms.field('acc_paypal_sel', "Tài khoản paypal hiện tại","list",[{value:"0",label:"Account Paypal 1"},{value:"1",label:"Account Paypal 2"},{value:"2",label:"Account Paypal 3"}]));
-            setting_pay.data_form_add.fields.push(cms.field('order_paypal_count', "Đếm đơn hàng để chuyển tài khoản thanh toán","text"));
+            setting_pay.data_form_add.fields.push(cms.field('acc_paypal_sel', "Tài khoản paypal hiện tại","list",[{value:"0",label:"Account Paypal 1"},{value:"1",label:"Account Paypal 2"},{value:"2",label:"Account Paypal 3"}],false,'<i class="fas fa-robot"></i> Tài khoản sẽ tự động thay đổi với số lượng đơn hàng'));
+            setting_pay.data_form_add.fields.push(cms.field('order_paypal_count', "Đếm đơn hàng để chuyển tài khoản thanh toán","text",'',true,'<i class="fas fa-lightbulb"></i> Chỉ số này sẽ tự động thay đổi sau mỗi lần đặt hàng'));
             cms.add(setting_pay);
 
             var p_setting = new Post();

@@ -51,6 +51,13 @@ function updateCartUI() {
 }
 
 class Web{
+
+  api_paypal="";
+  api_paypal_scenrest="";
+
+  index_app_paypay_cur=0;
+  paypal_app=[];
+
   setting=null;
   setting_footer=null;
   setting_footer_info=null;
@@ -67,8 +74,15 @@ class Web{
             if(setting.id_doc=="setting_footer_shop") w.setting_footer=setting;
             if(setting.id_doc=="setting_footer_info") w.setting_footer_info=setting;
           });
+
+          w.paypal_app.push({"api_paypal":w.setting.api_paypal,"api_paypal_scenrest":w.setting.api_paypal_scenrest});
+          w.paypal_app.push({"api_paypal":w.setting.api_paypal_2,"api_paypal_scenrest":w.setting.api_paypal_scenrest_2});
+          w.paypal_app.push({"api_paypal":w.setting.api_paypal_3,"api_paypal_scenrest":w.setting.api_paypal_scenrest_3});
+
+          w.api_paypal=w.paypal_app[w.index_app_paypay_cur].api_paypal;
+          w.api_paypal_scenrest=w.paypal_app[w.index_app_paypay_cur].api_paypal_scenrest;
   
-          $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.setting.api_paypal+'&intent=authorize"><\/script>');
+          $('head').append('<script src="https://www.paypal.com/sdk/js?client-id='+w.api_paypal+'&intent=authorize"><\/script>');
           $('#logo_txt').html(w.setting.logo_txt);
           cr.site_name=w.setting.logo_txt;
   
@@ -409,7 +423,7 @@ class Web{
           url: "https://api-m.sandbox.paypal.com/v1/oauth2/token",
           method: "POST",
           headers: {
-              "Authorization": "Basic " + btoa(w.setting.api_paypal+":"+w.setting.api_paypal_scenrest),
+              "Authorization": "Basic " + btoa(w.api_paypal+":"+w.api_paypal_scenrest),
               "Content-Type": "application/x-www-form-urlencoded"
           },
           data: {

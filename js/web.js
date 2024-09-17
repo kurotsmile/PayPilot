@@ -149,6 +149,7 @@ class Web{
     $("#page_title").html("About Us");
     cr.get("page/about.html",data=>{
       $("#page_containt").html(data);
+      cr.top();
     });
     updateCartUI();
   }

@@ -208,7 +208,7 @@ class Web{
     var p_html = `
     <div class="col mb-5">
         <div class="card custom-card h-100">
-            ${p.sale == "" ? '' : '<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>'}    
+            ${p.sale == "" ? '' : '<div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>'}    
             <!-- Product image-->    
             <img class="card-img-top img-prd" src="${img}" alt="..." />    
             <!-- Product details-->    
@@ -285,6 +285,7 @@ class Web{
                     var id_field=$(this).attr("id");
                     data_bill[id_field]=$(this).val();
                 });
+                data_bill["orderNotes"]=$("#orderNotes").val();
                 w.data_bill=data_bill;
                 localStorage.setItem("data_bill",JSON.stringify(data_bill));
               }
@@ -319,7 +320,6 @@ class Web{
             onApprove: function (data, actions) {
               return actions.order.authorize().then(function (authorization) {
                 var authorizationID = authorization.purchase_units[0].payments.authorizations[0].id;
-                console.log('Authorization ID:', authorizationID);
                 window.location.href = "index.html?p=done&authorization_id=" + authorizationID;
               });
             },
@@ -402,6 +402,7 @@ class Web{
       html_p+='<div class="col-md-8 col-12 col-lg-8">';
         html_p+='<strong>'+data.name+'</strong><br/>';
         html_p+='<b style="font-size:30px;">'+data.price+'$</b><br/>';
+        if(cr.alive(data.sale)) html_p+='<b  class="badge bg-danger text-white m-1">Sale</b> <span class="text-muted text-decoration-line-through">$'+data.sale+'</span> <br/>';
         html_p+='<a onclick="w.add_cart(this);return false;" data-id="'+data.index+'" data-name="'+data.name+'" data-price="'+data.price+'" class="btn btn-outline-dark mt-auto cart-btn" href="#"><i class="bi bi-cart-plus"></i> Add to cart</a> ';
         html_p+='<a onclick="cr.show_share();return false;" class="btn btn-outline-dark mt-auto cart-btn" href="#"><i class="fas fa-share-alt"></i> Share</a><br/><br/>';
         html_p+=data.tip;
@@ -466,9 +467,15 @@ class Web{
     if(w.setting_pay.order_paypal_count>20) w.setting_pay.acc_paypal_sel=2;
     else if(w.setting_pay.order_paypal_count>10) w.setting_pay.acc_paypal_sel=1;
     else w.setting_pay.acc_paypal_sel=0;
-    cr_firestore.set(w.setting_pay,"setting","setting_pay");
+    cr_firestore.set(w.setting_pay,"setting","setting_pay",()=>{
+      w.clear_cart();
+    });
   }
 
+  clear_cart(){
+    localStorage.setItem('cart',"[]");
+    updateCartUI();
+  }
 }
 var w=new Web();
 

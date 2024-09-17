@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
     <script src="Carrot-Framework-Web/Carrot.js?v=1"></script>
     <script src="Carrot-Framework-Web/cr_firestore.js"></script>
-    <script src="Carrot-Framework-Web/cr_cms.js?v=3"></script>
+    <script src="Carrot-Framework-Web/cr_cms.js?v=5"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -45,8 +45,8 @@
             p_product.data_form_add.fields.push(cms.field("image", "Ảnh Sản phẩm", "file"));
             p_product.data_form_add.fields.push(cms.field("tip", "Mô tả", "textarea"));
             p_product.data_form_add.fields.push(cms.field("sale", "Bắt đầu giảm giá (Nhập giá gốc)", "text"));
-            p_product.data_form_add.fields.push(cms.field("star", "Số sao chất lượng sảng phẩn", "text"));
-            p_product.data_form_add.fields.push(cms.field("in_home", "Hiển thị ở trang chủ", "text"));
+            p_product.data_form_add.fields.push(cms.field("star", "Số sao chất lượng sảng phẩn", "list",[{value:"0",label:"0 Đánh giá"},{value:"1",label:"1 sao"},{value:"2",label:"2 sao"},{value:"3",label:"3 sao"},{value:"4",label:"4 sao"},{value:"5",label:"5 sao"}]));
+            p_product.data_form_add.fields.push(cms.field("in_home", "Hiển thị ở trang chủ", "list",[{value:"0",label:"Không hiển thị ở trang chủ"},{value:"1",label:"Hiển thị ở trang chủ"}]));
             p_product.data_form_add.fields.push(cms.field("order", "Thứ tự hiển thị", "text"));
             cms.add(p_product);
 

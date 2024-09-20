@@ -17,6 +17,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
     <script src="Carrot-Framework-Web/Carrot.js?v=1"></script>
+    <script src="Carrot-Framework-Web/cr_post.js?v=2"></script>
     <script src="Carrot-Framework-Web/cr_icon.js"></script>
     <script src="Carrot-Framework-Web/cr_firestore.js"></script>
     <script src="Carrot-Framework-Web/cr_cms.js?v=7"></script>
@@ -120,6 +121,10 @@
             setting_contact.data_form_add.fields.push(cms.field('footer_company_tip', "Mô tả công ty"));
             setting_contact.data_form_add.fields.push(cms.field('footer_copyright', "Bản quyền"));
             cms.add(setting_contact);
+
+            //cms.add_menu("menu_product","Menu Products");
+            //cms.add_menu("menu_links","Menu Useful links");
+            //cms.add_menu("menu_footer_contact","Menu Contact");
 
             cr.setColor("#0da4fd");
             cr.onLoad();

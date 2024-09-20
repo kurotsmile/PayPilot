@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Đăng Ký Nhận Ưu Đãi Đặc Biệt</title>
+    <title>Register to Receive Special Offers</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -73,18 +72,23 @@
     </style>
 
     <!-- Facebook Pixel Code -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'YOUR_PIXEL_ID'); // Thay 'YOUR_PIXEL_ID' bằng ID Pixel của bạn
-        fbq('track', 'PageView');
-    </script>
+        <!-- Meta Pixel Code -->
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '524101530211632');
+            fbq('track', 'PageView');
+            </script>
+            <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=524101530211632&ev=PageView&noscript=1"
+            /></noscript>
+    <!-- End Meta Pixel Code -->
     <noscript>
         <img height="1" width="1" style="display:none"
             src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1" />
@@ -96,38 +100,38 @@
 <body>
     <div class="landing-section">
         <div class="container">
-            <h1 class="heading">Đăng Ký Nhận Ưu Đãi Đặc Biệt</h1>
-            <p class="subheading">Để nhận thông tin về những sản phẩm mới nhất và các ưu đãi đặc biệt, hãy điền thông tin của bạn vào biểu mẫu dưới đây!</p>
+            <h1 class="heading">Register to Receive Special Offers</h1>
+            <p class="subheading">To receive information about the latest products and special offers, please fill out your information below!</p>
             <div class="info-section">
                 <form id="registrationForm" action="#" method="POST">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Họ và tên:</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập họ và tên của bạn" required>
+                        <label for="name" class="form-label">Full Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Nhập địa chỉ email của bạn" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address" required>
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Số điện thoại:</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại của bạn" required>
+                        <label for="phone" class="form-label">Phone Number:</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-custom">Đăng Ký Ngay</button>
+                        <button type="submit" class="btn btn-custom" onclick="send_submit();return false;">Register Now</button>
                     </div>
                 </form>
             </div>
-            <p class="footer-text">Chúng tôi tôn trọng quyền riêng tư của bạn và cam kết bảo mật thông tin cá nhân.</p>
+            <p class="footer-text">We respect your privacy and are committed to protecting your personal information.</p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Thêm mã theo dõi sự kiện khi người dùng gửi biểu mẫu -->
+    <!-- Add Event Tracking for Form Submission -->
     <script>
-        document.getElementById('registrationForm').addEventListener('submit', function () {
+        function send_submit(){
             fbq('track', 'Lead');
-        });
+        }
     </script>
 </body>
 

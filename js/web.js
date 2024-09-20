@@ -46,7 +46,8 @@ function updateCartUI() {
 
   $('#cart-shipping').html(`$${shipping.toFixed(2)}`);
   $('#cart-tax').html(`$${tax.toFixed(2)}`);
-  $('#cart-total').html(`<b>Total</b><h4>$<span id="tt_price">${total.toFixed(2)}</span></h4>`);
+  $('#cart-total-sub').html(`<b>Subtotal</b><h5>$<span id="tt_price">${total.toFixed(2)}</span></h5>`);
+  $('#cart-total').html(`<b>Total</b><h4>$<span >${(total+tax+shipping).toFixed(2)}</span></h4>`);
   $("#count_cart").html(itemCount);
 }
 
@@ -63,6 +64,7 @@ class Web{
   setting_footer_info=null;
   setting_pay=null;
   data_bill=null;
+  ver='1.0';
 
   onLoad(){
     w.data_bill=JSON.parse(localStorage.getItem('data_bill')) || [];
@@ -103,6 +105,9 @@ class Web{
           $.each(w.setting_footer_info, function(key, val) {w.set_info_emp(key,val)});
   
           if(cr.alive(w.setting_footer_info.footer_company_logo)) $("#footer_company_logo").attr("src",w.setting_footer_info.footer_company_logo);
+
+          //cr.show_menu_list("#menu_links","menu");
+
       },()=>{
         w.onLoad();
       });
@@ -139,7 +144,7 @@ class Web{
           htm_view_all_product+='</div>';
           htm_view_all_product+='</div>';
           $("#all_product_home").append(htm_view_all_product);
-      });
+      });      
       updateCartUI();
   }
 
@@ -176,7 +181,7 @@ class Web{
     $("#page_title").html('<i class="fas fa-shopping-cart"></i> Cart');
     var html_cart='';
     html_cart+='<ul id="cart-items" class="list-group"></ul>';
-    html_cart+='<div id="cart-total" class="d-flex justify-content-between align-items-center mt-3">';
+    html_cart+='<div id="cart-total-sub" class="d-flex justify-content-between align-items-center mt-3">';
     html_cart+='<h4>Total: $0.00</h4>';
     html_cart+='</div>';
     html_cart+='<button id="checkout-btn" onclick="w.show_checkout();return false;" class="btn btn-outline-dark mt-3"><i class="bi bi-cart-check"></i> Proceed to Checkout</button>';

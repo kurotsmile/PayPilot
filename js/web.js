@@ -69,6 +69,7 @@ class Web{
   onLoad(){
     w.data_bill=JSON.parse(localStorage.getItem('data_bill')) || [];
     cr.get_json("config.json",(config_data)=>{
+        cr.site_url=config_data.site_url;
         cr_firestore.id_project = config_data.id_project;
         cr_firestore.api_key = config_data.api_key;
         cr_firestore.list("setting",datas=>{
@@ -113,6 +114,25 @@ class Web{
       });
     },(eror)=>{
       w.onLoad();
+    });
+  }
+
+  get_data_paypal_payment(act_done=null){
+    cr.msg_loading();
+    cr_firestore.list("setting",datas=>{
+      Swal.close();
+      $.each(datas,function(index,setting){
+        if(setting.id_doc=="setting_pay") w.setting_pay=setting;
+        if(setting.id_doc=="setting_pp_1") w.paypal_app.push({"api_paypal":setting.api_paypal,"api_paypal_scenrest":setting.api_paypal_scenrest});
+        if(setting.id_doc=="setting_pp_2") w.paypal_app.push({"api_paypal":setting.api_paypal,"api_paypal_scenrest":setting.api_paypal_scenrest});
+        if(setting.id_doc=="setting_pp_3") w.paypal_app.push({"api_paypal":setting.api_paypal,"api_paypal_scenrest":setting.api_paypal_scenrest});
+      });
+
+      w.index_app_paypay_cur=parseInt(w.setting_pay.acc_paypal_sel);
+      w.api_paypal=w.paypal_app[w.index_app_paypay_cur].api_paypal;
+      w.api_paypal_scenrest=w.paypal_app[w.index_app_paypay_cur].api_paypal_scenrest;
+
+      if(act_done) act_done();
     });
   }
 
@@ -272,6 +292,7 @@ class Web{
     $("#page_title").html('<i class="fas fa-cart-arrow-down"></i> Checkout');
     cr.get("page/checkout.html",data=>{
       $("#page_containt").html(data);
+      w.get_data_paypal_payment(()=>{
         setTimeout(()=>{
         // Tạo PayPal Button
           paypal.Buttons({
@@ -359,6 +380,7 @@ class Web{
           }).render('#paypal-button-container');
         },1000);
         updateCartUI();
+      });
     });
   }
 

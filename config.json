@@ -1,5 +1,6 @@
 {
     "id_project":"xoilacfoodball",
     "api_key":"AIzaSyD2cbGXjqxKHzmtARX6ejsCDJePDpth39Y",
-    "cms_mode":"pub"
+    "cms_mode":"pub",
+    "site_url":"https://payshop.vercel.app"
 }

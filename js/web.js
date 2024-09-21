@@ -190,9 +190,7 @@ class Web{
   }
 
   p_star(count) {
-    if (count === "" || isNaN(count) || count < 0) {
-        count = 0;
-    }
+    if (count === "" || isNaN(count) || count < 0) count = 0;
     var count = parseInt(count);
     var html_star = '<div class="d-flex justify-content-center small mb-2 w-100 icons-start">';
     var maxStars = 5;
@@ -302,6 +300,8 @@ class Web{
                     data_bill[id_field]=$(this).val();
                 });
                 data_bill["orderNotes"]=$("#orderNotes").val();
+                data_bill["paypal"]=(parseInt(w.index_app_paypay_cur)+1);
+                data_bill["date"]=new Date().toLocaleString();
                 w.data_bill=data_bill;
                 localStorage.setItem("data_bill",JSON.stringify(data_bill));
               }

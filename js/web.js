@@ -60,7 +60,6 @@ class Web{
   paypal_app=[];
 
   setting=null;
-  setting_footer=null;
   setting_footer_info=null;
   setting_pay=null;
   setting_fb_pixel=null;
@@ -76,7 +75,6 @@ class Web{
         cr_firestore.list("setting",datas=>{
           $.each(datas,function(index,setting){
             if(setting.id_doc=="setting_home_shop") w.setting=setting;
-            if(setting.id_doc=="setting_footer_shop") w.setting_footer=setting;
             if(setting.id_doc=="setting_footer_info") w.setting_footer_info=setting;
             if(setting.id_doc=="setting_pay") w.setting_pay=setting;
             if(setting.id_doc=="setting_fb_pixel") w.setting_fb_pixel=setting;
@@ -104,7 +102,6 @@ class Web{
           else if(page=="about") w.show_about();
           else w.show_home();
   
-          $.each(w.setting_footer, function(key, val) {w.set_info_emp(key,val)});
           $.each(w.setting_footer_info, function(key, val) {w.set_info_emp(key,val)});
   
           if(cr.alive(w.setting_footer_info.footer_company_logo)) $("#footer_company_logo").attr("src",w.setting_footer_info.footer_company_logo);
@@ -120,7 +117,9 @@ class Web{
             fbq('track', 'PageView');
           }
           cr.show_menu_list("#menu_top","menu");
-
+          cr.show_menu_list("#menu_links","menu_links");
+          cr.show_menu_list("#menu_product","menu_product");
+          cr.show_menu_list("#menu_footer_contact","menu_footer_contact");
       },()=>{
         w.onLoad();
       });

@@ -119,7 +119,7 @@ class Web{
             fbq('init',w.setting_fb_pixel.api_key_page);
             fbq('track', 'PageView');
           }
-          //cr.show_menu_list("#menu_links","menu");
+          cr.show_menu_list("#menu_top","menu");
 
       },()=>{
         w.onLoad();
@@ -254,7 +254,7 @@ class Web{
                     <a class="href-title" href="javascript:;"><b class="fw-bolder title-prd w-100 h-100" style="font-size:13px">${p.name}</b><br/></a>
                     ${w.p_star(p.star)}
                     <!-- Product price-->           
-                    <span class="text-muted text-decoration-line-through">${p.sale}</span> ${p.price}<b>$</b>    
+                    <span class="text-muted text-decoration-line-through">${p.sale}$</span> ${p.price}<b>$</b>    
                 </div>
             </div>    
             <!-- Product actions-->    

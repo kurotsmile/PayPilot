@@ -162,6 +162,7 @@ class Web{
       $("#page_subtitle").html(this.setting.subtitle);
       $("#all_product_home").html('<b><i class="fas fa-spinner fa-spin"></i> Loading...</b>');
       cr_firestore.list("product", (datas) => {
+          datas.sort(function(a, b) { return parseInt(a.order) - parseInt(b.order);});
           $("#all_product_home").empty();
           $.each(datas, function (index, p) {
               if(p.in_home!="1") return true;
